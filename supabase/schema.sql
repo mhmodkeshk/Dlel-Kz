@@ -1,11 +1,13 @@
--- دليل كفر الزيات V5 Phase 2
--- Run once in Supabase SQL Editor on a new project.
+-- دليل كفر الزيات — V5.2 Fixed Schema
+-- Supabase / PostgreSQL
+-- آمن لإعادة التشغيل (قدر الإمكان) على نفس المشروع.
+-- الترتيب: Extensions -> Tables -> Functions/Triggers -> RLS/Policies -> Grants -> Storage -> Seed data
 
 create extension if not exists pgcrypto;
 
-create or replace function public.is_admin()
-returns boolean language sql stable security definer set search_path=public
-as $$ select exists(select 1 from public.profiles p where p.id=auth.uid() and p.role='admin'); $$;
+-- =========================================================
+-- 1) TABLES
+-- =========================================================
 
 create table if not exists public.profiles (
   id uuid primary key references auth.users(id) on delete cascade,
@@ -26,14 +28,15 @@ create table if not exists public.businesses (
   id uuid primary key default gen_random_uuid(),
   owner_id uuid references public.profiles(id) on delete set null,
   category_id bigint references public.categories(id) on delete set null,
-  name text not null,
-  phone text not null,
-  whatsapp text,
+  name text not null check (char_length(name) between 2 and 120),
+  phone text not null check (phone ~ '^01[0-9]{9}$'),
+  whatsapp text check (whatsapp is null or whatsapp ~ '^01[0-9]{9}$'),
   address text,
   village text default 'كفر الزيات',
   logo_url text,
   verified boolean not null default false,
-  status text not null default 'pending' check (status in ('pending','active','rejected','suspended')),
+  status text not null default 'pending'
+    check (status in ('pending','active','rejected','suspended')),
   created_at timestamptz not null default now()
 );
 
@@ -47,7 +50,8 @@ create table if not exists public.products (
   phone text not null check (phone ~ '^01[0-9]{9}$'),
   image_url text,
   views bigint not null default 0 check (views >= 0),
-  status text not null default 'pending' check (status in ('pending','active','sold','rejected','deleted')),
+  status text not null default 'pending'
+    check (status in ('pending','active','sold','rejected','deleted')),
   created_at timestamptz not null default now()
 );
 
@@ -59,9 +63,10 @@ create table if not exists public.ads (
   target_url text,
   starts_at timestamptz not null,
   ends_at timestamptz not null,
-  status text not null default 'pending' check (status in ('pending','active','paused','expired','rejected')),
-  impressions bigint not null default 0,
-  clicks bigint not null default 0,
+  status text not null default 'pending'
+    check (status in ('pending','active','paused','expired','rejected')),
+  impressions bigint not null default 0 check (impressions >= 0),
+  clicks bigint not null default 0 check (clicks >= 0),
   created_at timestamptz not null default now(),
   check (ends_at > starts_at)
 );
@@ -75,10 +80,11 @@ create table if not exists public.wallets (
 create table if not exists public.wallet_transactions (
   id uuid primary key default gen_random_uuid(),
   user_id uuid not null references public.profiles(id) on delete cascade,
-  amount numeric(12,2) not null check(amount > 0),
+  amount numeric(12,2) not null check (amount > 0),
   type text not null check (type in ('credit','debit')),
   reason text not null,
-  status text not null default 'completed' check (status in ('pending','completed','rejected','reversed')),
+  status text not null default 'completed'
+    check (status in ('pending','completed','rejected','reversed')),
   created_at timestamptz not null default now()
 );
 
@@ -87,137 +93,592 @@ create table if not exists public.charge_requests (
   user_id uuid not null references public.profiles(id) on delete cascade,
   amount numeric(12,2) not null check (amount > 0 and amount <= 100000),
   receipt_url text not null,
-  status text not null default 'pending' check (status in ('pending','approved','rejected')),
+  status text not null default 'pending'
+    check (status in ('pending','approved','rejected')),
   reviewed_by uuid references public.profiles(id),
   reviewed_at timestamptz,
   created_at timestamptz not null default now()
 );
 
-
 create table if not exists public.service_catalog (
   code text primary key,
   label text not null,
-  price numeric(12,2) not null check(price > 0),
+  price numeric(12,2) not null check (price > 0),
   active boolean not null default true
 );
-
-insert into public.service_catalog(code,label,price) values
-('home_ad','إعلان في الرئيسية',50),
-('offer','إضافة عرض جديد',15)
-on conflict(code) do update set label=excluded.label,price=excluded.price;
 
 create table if not exists public.service_orders (
   id uuid primary key default gen_random_uuid(),
   user_id uuid not null references public.profiles(id) on delete cascade,
-  service_code text not null,
+  service_code text not null references public.service_catalog(code),
   label text not null,
-  amount numeric(12,2) not null check(amount >= 0),
-  status text not null default 'paid' check(status in ('paid','fulfilled','cancelled','refunded')),
+  amount numeric(12,2) not null check (amount >= 0),
+  status text not null default 'paid'
+    check (status in ('paid','fulfilled','cancelled','refunded')),
   created_at timestamptz not null default now()
 );
 
--- Auto profile + wallet creation after signup
-create or replace function public.handle_new_user()
-returns trigger language plpgsql security definer set search_path=public
+create index if not exists idx_products_status_created
+  on public.products(status, created_at desc);
+
+create index if not exists idx_products_seller
+  on public.products(seller_id, created_at desc);
+
+create index if not exists idx_businesses_status
+  on public.businesses(status, category_id);
+
+create index if not exists idx_charge_requests_status_created
+  on public.charge_requests(status, created_at desc);
+
+create index if not exists idx_wallet_transactions_user_created
+  on public.wallet_transactions(user_id, created_at desc);
+
+-- =========================================================
+-- 2) FUNCTIONS + TRIGGERS
+-- =========================================================
+
+create or replace function public.is_admin()
+returns boolean
+language sql
+stable
+security definer
+set search_path = public
 as $$
-declare local_phone text;
+  select exists(
+    select 1
+    from public.profiles p
+    where p.id = auth.uid()
+      and p.role = 'admin'
+  );
+$$;
+
+revoke all on function public.is_admin() from public;
+grant execute on function public.is_admin() to anon, authenticated;
+
+create or replace function public.handle_new_user()
+returns trigger
+language plpgsql
+security definer
+set search_path = public
+as $$
+declare
+  local_phone text;
+  local_name text;
 begin
-  local_phone := coalesce(new.raw_user_meta_data->>'phone', regexp_replace(coalesce(new.phone,''), '^\\+20', '0'));
-  insert into public.profiles(id,name,phone)
-  values(new.id, coalesce(nullif(new.raw_user_meta_data->>'name',''),'مستخدم'), local_phone)
+  local_name := coalesce(
+    nullif(trim(new.raw_user_meta_data->>'name'), ''),
+    'مستخدم'
+  );
+
+  local_phone := coalesce(
+    nullif(trim(new.raw_user_meta_data->>'phone'), ''),
+    case
+      when new.phone like '+20%' then '0' || substring(new.phone from 4)
+      else new.phone
+    end
+  );
+
+  insert into public.profiles(id, name, phone)
+  values(new.id, local_name, local_phone)
   on conflict(id) do nothing;
-  insert into public.wallets(user_id,balance) values(new.id,0) on conflict(user_id) do nothing;
+
+  insert into public.wallets(user_id, balance)
+  values(new.id, 0)
+  on conflict(user_id) do nothing;
+
   return new;
-end; $$;
+end;
+$$;
 
 drop trigger if exists on_auth_user_created on auth.users;
-create trigger on_auth_user_created after insert on auth.users for each row execute procedure public.handle_new_user();
+create trigger on_auth_user_created
+after insert on auth.users
+for each row execute procedure public.handle_new_user();
 
--- RLS
+create or replace function public.set_product_seller_name()
+returns trigger
+language plpgsql
+security definer
+set search_path = public
+as $$
+begin
+  select p.name
+  into new.seller_name
+  from public.profiles p
+  where p.id = new.seller_id;
+
+  if new.seller_name is null then
+    raise exception 'seller profile not found';
+  end if;
+
+  return new;
+end;
+$$;
+
+drop trigger if exists trg_products_set_seller_name on public.products;
+create trigger trg_products_set_seller_name
+before insert or update of seller_id
+on public.products
+for each row execute procedure public.set_product_seller_name();
+
+create or replace function public.increment_product_views(p_product_id uuid)
+returns void
+language plpgsql
+security definer
+set search_path = public
+as $$
+begin
+  update public.products
+  set views = views + 1
+  where id = p_product_id
+    and status = 'active';
+end;
+$$;
+
+revoke all on function public.increment_product_views(uuid) from public;
+grant execute on function public.increment_product_views(uuid) to anon, authenticated;
+
+create or replace function public.purchase_service(p_service_code text)
+returns uuid
+language plpgsql
+security definer
+set search_path = public
+as $$
+declare
+  uid uuid := auth.uid();
+  order_id uuid;
+  current_balance numeric;
+  svc public.service_catalog%rowtype;
+begin
+  if uid is null then
+    raise exception 'authentication required';
+  end if;
+
+  select *
+  into svc
+  from public.service_catalog
+  where code = p_service_code
+    and active = true;
+
+  if svc.code is null then
+    raise exception 'invalid service';
+  end if;
+
+  select balance
+  into current_balance
+  from public.wallets
+  where user_id = uid
+  for update;
+
+  if current_balance is null or current_balance < svc.price then
+    raise exception 'insufficient balance';
+  end if;
+
+  update public.wallets
+  set balance = balance - svc.price,
+      updated_at = now()
+  where user_id = uid;
+
+  insert into public.wallet_transactions(user_id, amount, type, reason)
+  values(uid, svc.price, 'debit', svc.label);
+
+  insert into public.service_orders(user_id, service_code, label, amount)
+  values(uid, svc.code, svc.label, svc.price)
+  returning id into order_id;
+
+  return order_id;
+end;
+$$;
+
+revoke all on function public.purchase_service(text) from public;
+grant execute on function public.purchase_service(text) to authenticated;
+
+create or replace function public.admin_review_charge(
+  p_request_id uuid,
+  p_approve boolean
+)
+returns void
+language plpgsql
+security definer
+set search_path = public
+as $$
+declare
+  req public.charge_requests%rowtype;
+begin
+  if not public.is_admin() then
+    raise exception 'admin required';
+  end if;
+
+  select *
+  into req
+  from public.charge_requests
+  where id = p_request_id
+  for update;
+
+  if req.id is null then
+    raise exception 'not found';
+  end if;
+
+  if req.status <> 'pending' then
+    raise exception 'already reviewed';
+  end if;
+
+  if p_approve then
+    update public.wallets
+    set balance = balance + req.amount,
+        updated_at = now()
+    where user_id = req.user_id;
+
+    if not found then
+      raise exception 'wallet not found';
+    end if;
+
+    insert into public.wallet_transactions(user_id, amount, type, reason)
+    values(req.user_id, req.amount, 'credit', 'شحن محفظة معتمد');
+
+    update public.charge_requests
+    set status = 'approved',
+        reviewed_by = auth.uid(),
+        reviewed_at = now()
+    where id = p_request_id;
+  else
+    update public.charge_requests
+    set status = 'rejected',
+        reviewed_by = auth.uid(),
+        reviewed_at = now()
+    where id = p_request_id;
+  end if;
+end;
+$$;
+
+revoke all on function public.admin_review_charge(uuid, boolean) from public;
+grant execute on function public.admin_review_charge(uuid, boolean) to authenticated;
+
+-- =========================================================
+-- 3) ROW LEVEL SECURITY
+-- =========================================================
+
 alter table public.profiles enable row level security;
+alter table public.categories enable row level security;
 alter table public.businesses enable row level security;
 alter table public.products enable row level security;
 alter table public.ads enable row level security;
 alter table public.wallets enable row level security;
 alter table public.wallet_transactions enable row level security;
 alter table public.charge_requests enable row level security;
+alter table public.service_catalog enable row level security;
 alter table public.service_orders enable row level security;
 
-create policy "profiles_read_own_or_admin" on public.profiles for select using (id=auth.uid() or public.is_admin());
-create policy "profiles_update_own" on public.profiles for update using (id=auth.uid()) with check (id=auth.uid());
+drop policy if exists "profiles_read_own_or_admin" on public.profiles;
+drop policy if exists "profiles_update_own_name" on public.profiles;
+drop policy if exists "profiles_admin_update" on public.profiles;
+drop policy if exists "categories_public_read" on public.categories;
+drop policy if exists "businesses_public_or_owner_admin" on public.businesses;
+drop policy if exists "businesses_owner_insert" on public.businesses;
+drop policy if exists "businesses_owner_update" on public.businesses;
+drop policy if exists "businesses_admin_delete" on public.businesses;
+drop policy if exists "products_public_owner_admin" on public.products;
+drop policy if exists "products_owner_insert" on public.products;
+drop policy if exists "products_owner_update_status" on public.products;
+drop policy if exists "ads_public_admin" on public.ads;
+drop policy if exists "ads_admin_insert" on public.ads;
+drop policy if exists "ads_admin_update" on public.ads;
+drop policy if exists "ads_admin_delete" on public.ads;
+drop policy if exists "wallet_owner_admin_read" on public.wallets;
+drop policy if exists "wallet_tx_owner_admin_read" on public.wallet_transactions;
+drop policy if exists "charge_owner_admin_read" on public.charge_requests;
+drop policy if exists "charge_owner_insert" on public.charge_requests;
+drop policy if exists "service_catalog_read" on public.service_catalog;
+drop policy if exists "service_orders_owner_admin_read" on public.service_orders;
 
-create policy "businesses_public_or_owner_admin" on public.businesses for select using (status='active' or owner_id=auth.uid() or public.is_admin());
-create policy "businesses_owner_insert" on public.businesses for insert with check(owner_id=auth.uid());
-create policy "businesses_owner_update" on public.businesses for update using(owner_id=auth.uid() or public.is_admin()) with check(owner_id=auth.uid() or public.is_admin());
+create policy "profiles_read_own_or_admin"
+on public.profiles
+for select
+using (id = auth.uid() or public.is_admin());
 
-create policy "products_public_owner_admin" on public.products for select using(status='active' or seller_id=auth.uid() or public.is_admin());
-create policy "products_owner_insert" on public.products for insert with check(seller_id=auth.uid());
-create policy "products_owner_update" on public.products for update using(seller_id=auth.uid() or public.is_admin()) with check(seller_id=auth.uid() or public.is_admin());
+create policy "profiles_update_own_name"
+on public.profiles
+for update
+using (id = auth.uid())
+with check (id = auth.uid());
 
-create policy "ads_public_admin" on public.ads for select using(status='active' or public.is_admin());
-create policy "ads_admin_all" on public.ads for all using(public.is_admin()) with check(public.is_admin());
+create policy "profiles_admin_update"
+on public.profiles
+for update
+using (public.is_admin())
+with check (public.is_admin());
 
-create policy "wallet_owner_admin_read" on public.wallets for select using(user_id=auth.uid() or public.is_admin());
-create policy "wallet_tx_owner_admin_read" on public.wallet_transactions for select using(user_id=auth.uid() or public.is_admin());
-create policy "charge_owner_admin_read" on public.charge_requests for select using(user_id=auth.uid() or public.is_admin());
-create policy "charge_owner_insert" on public.charge_requests for insert with check(user_id=auth.uid());
-create policy "service_orders_owner_admin_read" on public.service_orders for select using(user_id=auth.uid() or public.is_admin());
+create policy "categories_public_read"
+on public.categories
+for select
+using (true);
 
--- Product views: only active products can be incremented
-create or replace function public.increment_product_views(p_product_id uuid)
-returns void language plpgsql security definer set search_path=public
-as $$ begin update public.products set views=views+1 where id=p_product_id and status='active'; end; $$;
-grant execute on function public.increment_product_views(uuid) to anon, authenticated;
+create policy "businesses_public_or_owner_admin"
+on public.businesses
+for select
+using (
+  status = 'active'
+  or owner_id = auth.uid()
+  or public.is_admin()
+);
 
--- Atomic wallet purchase. Price is resolved on the server; browser cannot choose it.
-create or replace function public.purchase_service(p_service_code text)
-returns uuid language plpgsql security definer set search_path=public
-as $$
-declare uid uuid:=auth.uid(); order_id uuid; current_balance numeric; svc public.service_catalog%rowtype;
-begin
-  if uid is null then raise exception 'authentication required'; end if;
-  select * into svc from public.service_catalog where code=p_service_code and active=true;
-  if svc.code is null then raise exception 'invalid service'; end if;
-  select balance into current_balance from public.wallets where user_id=uid for update;
-  if current_balance is null or current_balance < svc.price then raise exception 'insufficient balance'; end if;
-  update public.wallets set balance=balance-svc.price,updated_at=now() where user_id=uid;
-  insert into public.wallet_transactions(user_id,amount,type,reason) values(uid,svc.price,'debit',svc.label);
-  insert into public.service_orders(user_id,service_code,label,amount) values(uid,svc.code,svc.label,svc.price) returning id into order_id;
-  return order_id;
-end; $$;
-grant execute on function public.purchase_service(text) to authenticated;
+create policy "businesses_owner_insert"
+on public.businesses
+for insert
+to authenticated
+with check (
+  owner_id = auth.uid()
+  and status = 'pending'
+  and verified = false
+);
 
--- Admin approves/rejects recharge atomically and only once.
-create or replace function public.admin_review_charge(p_request_id uuid,p_approve boolean)
-returns void language plpgsql security definer set search_path=public
-as $$
-declare req public.charge_requests%rowtype;
-begin
-  if not public.is_admin() then raise exception 'admin required'; end if;
-  select * into req from public.charge_requests where id=p_request_id for update;
-  if req.id is null then raise exception 'not found'; end if;
-  if req.status <> 'pending' then raise exception 'already reviewed'; end if;
-  if p_approve then
-    update public.wallets set balance=balance+req.amount,updated_at=now() where user_id=req.user_id;
-    insert into public.wallet_transactions(user_id,amount,type,reason) values(req.user_id,req.amount,'credit','شحن محفظة معتمد');
-    update public.charge_requests set status='approved',reviewed_by=auth.uid(),reviewed_at=now() where id=p_request_id;
-  else
-    update public.charge_requests set status='rejected',reviewed_by=auth.uid(),reviewed_at=now() where id=p_request_id;
-  end if;
-end; $$;
-grant execute on function public.admin_review_charge(uuid,boolean) to authenticated;
+create policy "businesses_owner_update"
+on public.businesses
+for update
+to authenticated
+using (
+  (owner_id = auth.uid() and status in ('pending','rejected'))
+  or public.is_admin()
+)
+with check (
+  (owner_id = auth.uid() and status = 'pending' and verified = false)
+  or public.is_admin()
+);
 
--- Storage buckets
-insert into storage.buckets(id,name,public) values('product-images','product-images',true) on conflict(id) do nothing;
-insert into storage.buckets(id,name,public) values('receipts','receipts',false) on conflict(id) do nothing;
+create policy "businesses_admin_delete"
+on public.businesses
+for delete
+to authenticated
+using (public.is_admin());
 
-create policy "product_images_public_read" on storage.objects for select using(bucket_id='product-images');
-create policy "product_images_owner_insert" on storage.objects for insert to authenticated with check(bucket_id='product-images' and (storage.foldername(name))[2]=auth.uid()::text);
-create policy "product_images_owner_delete" on storage.objects for delete to authenticated using(bucket_id='product-images' and (storage.foldername(name))[2]=auth.uid()::text);
-create policy "receipts_owner_insert" on storage.objects for insert to authenticated with check(bucket_id='receipts' and (storage.foldername(name))[2]=auth.uid()::text);
-create policy "receipts_owner_or_admin_read" on storage.objects for select to authenticated using(bucket_id='receipts' and ((storage.foldername(name))[2]=auth.uid()::text or public.is_admin()));
+create policy "products_public_owner_admin"
+on public.products
+for select
+using (
+  status = 'active'
+  or seller_id = auth.uid()
+  or public.is_admin()
+);
 
--- Seed categories
-insert into public.categories(name,icon,sort_order) values
-('الصيدليات','💊',1),('المطاعم','🍽️',2),('دليفيري','🛵',3),('نقل ومواصلات','🚗',4),('مكتبات وخدمات','📚',5),('تبريد وتكييف','❄️',6),('صنايعية','🛠️',7),('ألوميتال ومطابخ','🏗️',8),('خدمات قانونية','⚖️',9),('خضروات وعطارة','🥦',10),('معامل التحاليل','🧪',11),('دعاية وإعلان','📢',12),('تجميل','💄',13),('مصورين','📸',14),('ألعاب وخدمات','🎮',15)
-on conflict(name) do nothing;
+create policy "products_owner_insert"
+on public.products
+for insert
+to authenticated
+with check (
+  seller_id = auth.uid()
+  and status = 'pending'
+  and views = 0
+);
+
+create policy "products_owner_update_status"
+on public.products
+for update
+to authenticated
+using (
+  seller_id = auth.uid()
+  or public.is_admin()
+)
+with check (
+  (
+    seller_id = auth.uid()
+    and status in ('pending','deleted')
+  )
+  or public.is_admin()
+);
+
+create policy "ads_public_admin"
+on public.ads
+for select
+using (status = 'active' or public.is_admin());
+
+create policy "ads_admin_insert"
+on public.ads
+for insert
+to authenticated
+with check (public.is_admin());
+
+create policy "ads_admin_update"
+on public.ads
+for update
+to authenticated
+using (public.is_admin())
+with check (public.is_admin());
+
+create policy "ads_admin_delete"
+on public.ads
+for delete
+to authenticated
+using (public.is_admin());
+
+create policy "wallet_owner_admin_read"
+on public.wallets
+for select
+to authenticated
+using (user_id = auth.uid() or public.is_admin());
+
+create policy "wallet_tx_owner_admin_read"
+on public.wallet_transactions
+for select
+to authenticated
+using (user_id = auth.uid() or public.is_admin());
+
+create policy "charge_owner_admin_read"
+on public.charge_requests
+for select
+to authenticated
+using (user_id = auth.uid() or public.is_admin());
+
+create policy "charge_owner_insert"
+on public.charge_requests
+for insert
+to authenticated
+with check (
+  user_id = auth.uid()
+  and status = 'pending'
+  and reviewed_by is null
+  and reviewed_at is null
+);
+
+create policy "service_catalog_read"
+on public.service_catalog
+for select
+using (active = true or public.is_admin());
+
+create policy "service_orders_owner_admin_read"
+on public.service_orders
+for select
+to authenticated
+using (user_id = auth.uid() or public.is_admin());
+
+-- =========================================================
+-- 4) TABLE / COLUMN PRIVILEGES
+-- =========================================================
+
+grant select on public.categories to anon, authenticated;
+grant select on public.businesses to anon, authenticated;
+grant select on public.products to anon, authenticated;
+grant select on public.ads to anon, authenticated;
+grant select on public.service_catalog to anon, authenticated;
+
+grant select on public.profiles to authenticated;
+revoke update on public.profiles from anon, authenticated;
+grant update(name) on public.profiles to authenticated;
+
+grant insert, update on public.businesses to authenticated;
+
+grant insert on public.products to authenticated;
+revoke update on public.products from anon, authenticated;
+grant update(status) on public.products to authenticated;
+
+grant select on public.wallets to authenticated;
+grant select on public.wallet_transactions to authenticated;
+
+grant select, insert on public.charge_requests to authenticated;
+grant select on public.service_orders to authenticated;
+
+grant insert, update, delete on public.ads to authenticated;
+
+grant usage, select on all sequences in schema public to authenticated;
+
+-- =========================================================
+-- 5) STORAGE
+-- =========================================================
+
+insert into storage.buckets(id, name, public)
+values ('product-images', 'product-images', true)
+on conflict(id) do update set public = excluded.public;
+
+insert into storage.buckets(id, name, public)
+values ('receipts', 'receipts', false)
+on conflict(id) do update set public = excluded.public;
+
+drop policy if exists "product_images_public_read" on storage.objects;
+drop policy if exists "product_images_owner_insert" on storage.objects;
+drop policy if exists "product_images_owner_delete" on storage.objects;
+drop policy if exists "receipts_owner_insert" on storage.objects;
+drop policy if exists "receipts_owner_or_admin_read" on storage.objects;
+
+create policy "product_images_public_read"
+on storage.objects
+for select
+using (bucket_id = 'product-images');
+
+create policy "product_images_owner_insert"
+on storage.objects
+for insert
+to authenticated
+with check (
+  bucket_id = 'product-images'
+  and (storage.foldername(name))[2] = auth.uid()::text
+);
+
+create policy "product_images_owner_delete"
+on storage.objects
+for delete
+to authenticated
+using (
+  bucket_id = 'product-images'
+  and (storage.foldername(name))[2] = auth.uid()::text
+);
+
+create policy "receipts_owner_insert"
+on storage.objects
+for insert
+to authenticated
+with check (
+  bucket_id = 'receipts'
+  and (storage.foldername(name))[2] = auth.uid()::text
+);
+
+create policy "receipts_owner_or_admin_read"
+on storage.objects
+for select
+to authenticated
+using (
+  bucket_id = 'receipts'
+  and (
+    (storage.foldername(name))[2] = auth.uid()::text
+    or public.is_admin()
+  )
+);
+
+-- =========================================================
+-- 6) SEED DATA
+-- =========================================================
+
+insert into public.service_catalog(code, label, price)
+values
+  ('home_ad', 'إعلان في الرئيسية', 50),
+  ('offer', 'إضافة عرض جديد', 15)
+on conflict(code)
+do update set
+  label = excluded.label,
+  price = excluded.price;
+
+insert into public.categories(name, icon, sort_order)
+values
+  ('الصيدليات','💊',1),
+  ('المطاعم','🍽️',2),
+  ('دليفيري','🛵',3),
+  ('نقل ومواصلات','🚗',4),
+  ('مكتبات وخدمات','📚',5),
+  ('تبريد وتكييف','❄️',6),
+  ('صنايعية','🛠️',7),
+  ('ألوميتال ومطابخ','🏗️',8),
+  ('خدمات قانونية','⚖️',9),
+  ('خضروات وعطارة','🥦',10),
+  ('معامل التحاليل','🧪',11),
+  ('دعاية وإعلان','📢',12),
+  ('تجميل','💄',13),
+  ('مصورين','📸',14),
+  ('ألعاب وخدمات','🎮',15)
+on conflict(name)
+do update set
+  icon = excluded.icon,
+  sort_order = excluded.sort_order;
+
+-- بعد نجاح التنفيذ:
+-- 1) اربط js/config.js بـ Project URL + Publishable/Anon key.
+-- 2) أنشئ أول مستخدم من الموقع.
+-- 3) اجعله Admin من SQL Editor:
+--    update public.profiles set role='admin' where phone='01XXXXXXXXX';
