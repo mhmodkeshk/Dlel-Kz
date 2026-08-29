@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="ar" dir="rtl">
+
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -61,11 +62,20 @@
 
     </div>
 
+    <!-- ========================= -->
     <!-- المنتجات -->
+    <!-- ========================= -->
+
     <section id="admin-products"></section>
 
+
+    <!-- ========================= -->
     <!-- المحلات والخدمات -->
+    <!-- ========================= -->
+
     <section id="admin-businesses" hidden>
+
+      <!-- إضافة نشاط جديد -->
 
       <article
         class="admin-card"
@@ -123,6 +133,7 @@
               class="finput"
               type="tel"
               maxlength="11"
+              inputmode="numeric"
               placeholder="01xxxxxxxxx"
             >
           </div>
@@ -137,6 +148,7 @@
               class="finput"
               type="tel"
               maxlength="11"
+              inputmode="numeric"
               placeholder="01xxxxxxxxx"
             >
           </div>
@@ -150,6 +162,7 @@
               id="business-village"
               class="finput"
               type="text"
+              maxlength="100"
               value="كفر الزيات"
             >
           </div>
@@ -163,6 +176,7 @@
               id="business-address"
               class="finput"
               type="text"
+              maxlength="300"
               placeholder="العنوان بالتفصيل"
             >
           </div>
@@ -237,11 +251,282 @@
 
       </article>
 
+
+      <!-- ========================= -->
+      <!-- نموذج تعديل النشاط -->
+      <!-- ========================= -->
+
+      <article
+        id="business-edit-card"
+        class="admin-card"
+        style="
+          margin-bottom:16px;
+          display:none;
+          border:2px solid var(--primary);
+        "
+      >
+
+        <div
+          style="
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            gap:10px;
+            margin-bottom:14px;
+          "
+        >
+
+          <div>
+            <h2>
+              ✏️ تعديل بيانات النشاط
+            </h2>
+
+            <div
+              id="edit-business-title"
+              class="admin-meta"
+              style="margin-top:4px;"
+            ></div>
+          </div>
+
+          <button
+            type="button"
+            class="admin-btn no"
+            onclick="cancelBusinessEdit()"
+          >
+            إلغاء
+          </button>
+
+        </div>
+
+        <input
+          type="hidden"
+          id="edit-business-id"
+        >
+
+        <div
+          style="
+            display:grid;
+            grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+            gap:10px;
+          "
+        >
+
+          <div>
+            <label class="flabel">
+              التصنيف *
+            </label>
+
+            <select
+              id="edit-business-category"
+              class="finput"
+            >
+              <option value="">
+                اختر التصنيف
+              </option>
+            </select>
+          </div>
+
+
+          <div>
+            <label class="flabel">
+              اسم النشاط *
+            </label>
+
+            <input
+              id="edit-business-name"
+              class="finput"
+              type="text"
+              maxlength="120"
+            >
+          </div>
+
+
+          <div>
+            <label class="flabel">
+              رقم الهاتف *
+            </label>
+
+            <input
+              id="edit-business-phone"
+              class="finput"
+              type="tel"
+              maxlength="11"
+              inputmode="numeric"
+            >
+          </div>
+
+
+          <div>
+            <label class="flabel">
+              واتساب
+            </label>
+
+            <input
+              id="edit-business-whatsapp"
+              class="finput"
+              type="tel"
+              maxlength="11"
+              inputmode="numeric"
+            >
+          </div>
+
+
+          <div>
+            <label class="flabel">
+              القرية / المنطقة
+            </label>
+
+            <input
+              id="edit-business-village"
+              class="finput"
+              type="text"
+              maxlength="100"
+            >
+          </div>
+
+
+          <div>
+            <label class="flabel">
+              العنوان
+            </label>
+
+            <input
+              id="edit-business-address"
+              class="finput"
+              type="text"
+              maxlength="300"
+            >
+          </div>
+
+        </div>
+
+
+        <label class="flabel">
+          وصف النشاط
+        </label>
+
+        <textarea
+          id="edit-business-description"
+          class="finput"
+          maxlength="1500"
+        ></textarea>
+
+
+        <label class="flabel">
+          رابط Google Maps
+        </label>
+
+        <input
+          id="edit-business-maps"
+          class="finput"
+          type="url"
+          placeholder="https://..."
+        >
+
+
+        <div
+          style="
+            display:flex;
+            gap:18px;
+            flex-wrap:wrap;
+            margin:10px 0 15px;
+          "
+        >
+
+          <label>
+            <input
+              type="checkbox"
+              id="edit-business-verified"
+            >
+            ✅ نشاط موثّق
+          </label>
+
+          <label>
+            <input
+              type="checkbox"
+              id="edit-business-featured"
+            >
+            ⭐ نشاط مميز
+          </label>
+
+        </div>
+
+
+        <label class="flabel">
+          حالة النشاط
+        </label>
+
+        <select
+          id="edit-business-status"
+          class="finput"
+        >
+          <option value="active">
+            ✅ نشط
+          </option>
+
+          <option value="pending">
+            ⏳ معلق
+          </option>
+
+          <option value="suspended">
+            ⛔ موقوف
+          </option>
+
+          <option value="rejected">
+            ❌ مرفوض
+          </option>
+        </select>
+
+
+        <div
+          style="
+            display:flex;
+            gap:10px;
+            margin-top:14px;
+          "
+        >
+
+          <button
+            type="button"
+            class="main-btn"
+            onclick="saveBusinessEdit()"
+          >
+            💾 حفظ التعديلات
+          </button>
+
+          <button
+            type="button"
+            class="main-btn outline"
+            onclick="cancelBusinessEdit()"
+          >
+            إلغاء
+          </button>
+
+        </div>
+
+
+        <div
+          id="business-edit-message"
+          style="
+            margin-top:10px;
+            font-size:12px;
+            font-weight:700;
+          "
+        ></div>
+
+      </article>
+
+
+      <!-- الطلبات المعلقة -->
+
       <h2 style="margin:16px 0 10px;">
         ⏳ طلبات إضافة معلقة
       </h2>
 
       <div id="admin-business-pending"></div>
+
+
+      <!-- كل المحلات -->
 
       <h2 style="margin:20px 0 10px;">
         🏪 كل المحلات والخدمات
@@ -251,7 +536,11 @@
 
     </section>
 
+
+    <!-- ========================= -->
     <!-- الشحن -->
+    <!-- ========================= -->
+
     <section
       id="admin-charges"
       hidden
@@ -260,6 +549,7 @@
   </section>
 
 </main>
+
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
