@@ -39,14 +39,6 @@
      SPLASH
 ===================================================== -->
 
-<!-- =====================================================
-     SPLASH SCREEN
-===================================================== -->
-
-<!-- =====================================================
-     SPLASH
-===================================================== -->
-
 <div id="splash">
 
   <div class="splash-logo">
@@ -68,6 +60,15 @@
   </div>
 
 </div>
+
+
+<div
+  class="toast"
+  id="toast"
+></div>
+
+
+<div
   class="app"
   id="app"
   style="display:none;"
@@ -110,123 +111,38 @@
     </div>
 
 
-    <!-- أزرار الراديو والمشاركة -->
-
-    <div
-      class="header-btns"
-      style="
-        display:flex;
-        align-items:flex-start;
-        gap:10px;
-      "
-    >
-
-      <!-- الراديو -->
+    <div class="header-btns">
 
       <button
+        class="header-action-btn"
         onclick="toggleRadioBar()"
         title="شغل الراديو"
         type="button"
-        style="
-          width:48px;
-          padding:0;
-          margin:0;
-          background:transparent;
-          border:none;
-          cursor:pointer;
-          display:flex;
-          flex-direction:column;
-          align-items:center;
-          justify-content:flex-start;
-          font-family:'Cairo',sans-serif;
-          color:white;
-        "
       >
 
-        <span
-          style="
-            width:38px;
-            height:38px;
-            display:flex;
-            align-items:center;
-            justify-content:center;
-            background:rgba(255,255,255,0.20);
-            border:1px solid rgba(255,255,255,0.35);
-            border-radius:10px;
-            font-size:17px;
-            line-height:1;
-          "
-        >
+        <span class="header-action-icon">
           📻
         </span>
 
-        <span
-          style="
-            display:block;
-            margin-top:4px;
-            color:white;
-            font-size:9px;
-            font-weight:700;
-            line-height:1.3;
-            text-align:center;
-          "
-        >
+        <span class="header-action-label">
           شغل<br>الراديو
         </span>
 
       </button>
 
 
-      <!-- مشاركة الدليل -->
-
       <button
+        class="header-action-btn"
         onclick="shareApp()"
         title="أنشر الدليل"
         type="button"
-        style="
-          width:48px;
-          padding:0;
-          margin:0;
-          background:transparent;
-          border:none;
-          cursor:pointer;
-          display:flex;
-          flex-direction:column;
-          align-items:center;
-          justify-content:flex-start;
-          font-family:'Cairo',sans-serif;
-          color:white;
-        "
       >
 
-        <span
-          style="
-            width:38px;
-            height:38px;
-            display:flex;
-            align-items:center;
-            justify-content:center;
-            background:rgba(255,255,255,0.20);
-            border:1px solid rgba(255,255,255,0.35);
-            border-radius:10px;
-            font-size:17px;
-            line-height:1;
-          "
-        >
+        <span class="header-action-icon">
           📤
         </span>
 
-        <span
-          style="
-            display:block;
-            margin-top:4px;
-            color:white;
-            font-size:9px;
-            font-weight:700;
-            line-height:1.3;
-            text-align:center;
-          "
-        >
+        <span class="header-action-label">
           أنشر<br>الدليل
         </span>
 
@@ -278,9 +194,7 @@
 >
 
 
-  <!-- =========================
-       RADIO
-  ========================== -->
+  <!-- RADIO -->
 
   <div
     class="radio-bar"
@@ -293,7 +207,6 @@
       id="radio-dot"
     ></span>
 
-
     <div class="info">
 
       <div class="title">
@@ -305,7 +218,6 @@
         </span>
 
       </div>
-
 
       <div
         class="sub"
@@ -328,9 +240,7 @@
   </div>
 
 
-  <!-- =====================================================
-       ADS CAROUSEL
-  ====================================================== -->
+  <!-- ADS CAROUSEL -->
 
   <div
     class="ad-carousel"
@@ -352,7 +262,6 @@
           )
         "
       >
-
         <div
           class="ad-slide-bg"
           style="
@@ -360,7 +269,6 @@
             background-position:center top;
           "
         ></div>
-
       </div>
 
 
@@ -373,7 +281,6 @@
           )
         "
       >
-
         <div
           class="ad-slide-bg"
           style="
@@ -381,7 +288,6 @@
             background-position:center top;
           "
         ></div>
-
       </div>
 
 
@@ -394,7 +300,6 @@
           )
         "
       >
-
         <div
           class="ad-slide-bg"
           style="
@@ -402,7 +307,6 @@
             background-position:center top;
           "
         ></div>
-
       </div>
 
 
@@ -410,7 +314,6 @@
         class="ad-slide"
         onclick="window.open('tel:15243')"
       >
-
         <div
           class="ad-slide-bg"
           style="
@@ -418,7 +321,6 @@
             background-position:center center;
           "
         ></div>
-
       </div>
 
 
@@ -431,7 +333,6 @@
           )
         "
       >
-
         <div
           class="ad-slide-bg"
           style="
@@ -439,7 +340,6 @@
             background-position:center top;
           "
         ></div>
-
       </div>
 
 
@@ -452,7 +352,6 @@
           )
         "
       >
-
         <div
           class="ad-slide-bg"
           style="
@@ -460,7 +359,6 @@
             background-position:center top;
           "
         ></div>
-
       </div>
 
     </div>
@@ -480,15 +378,11 @@
   </div>
 
 
-  <!-- FAVORITES -->
-
   <div
     class="fav-section-home"
     id="fav-section-home"
   ></div>
 
-
-  <!-- CATEGORIES -->
 
   <div class="sec-title">
 
@@ -508,8 +402,6 @@
   ></div>
 
 
-  <!-- SHARE -->
-
   <div
     style="
       margin:20px 16px 0;
@@ -527,7 +419,6 @@
     <div style="font-size:26px;">
       📲
     </div>
-
 
     <div style="flex:1;">
 
@@ -554,12 +445,11 @@
 
   </div>
 
-
 </div>
 
 
 <!-- =====================================================
-     CATEGORY SCREEN
+     CATEGORY
 ===================================================== -->
 
 <div
@@ -587,7 +477,7 @@
 
 
 <!-- =====================================================
-     SEARCH SCREEN
+     SEARCH
 ===================================================== -->
 
 <div
@@ -626,7 +516,7 @@
 
 
 <!-- =====================================================
-     MARKETPLACE
+     SELL
 ===================================================== -->
 
 <div
@@ -772,18 +662,12 @@
           cursor:pointer;
           background:var(--bg);
           margin-bottom:10px;
-          transition:border-color 0.2s;
         "
       >
 
         <div id="img-preview-wrap">
 
-          <div
-            style="
-              font-size:32px;
-              margin-bottom:6px;
-            "
-          >
+          <div style="font-size:32px;">
             📷
           </div>
 
@@ -795,16 +679,6 @@
             "
           >
             اضغط لرفع صورة المنتج
-          </div>
-
-          <div
-            style="
-              font-size:11px;
-              color:var(--muted);
-              margin-top:3px;
-            "
-          >
-            JPG, PNG — حجم مناسب
           </div>
 
         </div>
@@ -855,12 +729,7 @@
     "
   >
 
-    <div
-      style="
-        font-size:32px;
-        margin-bottom:10px;
-      "
-    >
+    <div style="font-size:32px;">
       📣
     </div>
 
@@ -868,7 +737,6 @@
       style="
         font-size:18px;
         font-weight:900;
-        margin-bottom:6px;
       "
     >
       أعلن في دليل كفر الزيات
@@ -896,69 +764,9 @@
     style="border:2px solid var(--primary);"
   >
 
-    <div
-      style="
-        display:flex;
-        justify-content:space-between;
-        align-items:flex-start;
-        margin-bottom:10px;
-      "
-    >
-
-      <div>
-
-        <div
-          style="
-            background:var(--primary);
-            color:white;
-            font-size:10px;
-            padding:2px 8px;
-            border-radius:20px;
-            display:inline-block;
-            margin-bottom:4px;
-          "
-        >
-          الأكثر طلباً
-        </div>
-
-        <div
-          style="
-            font-size:14px;
-            font-weight:700;
-          "
-        >
-          باقة مميزة ⭐
-        </div>
-
-      </div>
-
-
-      <div
-        style="
-          font-size:15px;
-          font-weight:900;
-          color:var(--primary);
-        "
-      >
-
-        مجاناً
-
-        <br>
-
-        <span
-          style="
-            font-size:11px;
-            color:var(--muted);
-            font-weight:400;
-          "
-        >
-          لفترة محدودة
-        </span>
-
-      </div>
-
+    <div style="font-size:14px;font-weight:700;">
+      باقة مميزة ⭐
     </div>
-
 
     <div class="ad-feat">
       ظهور في الصفحة الرئيسية
@@ -972,13 +780,9 @@
       رقم الواتساب ظاهر مباشرة
     </div>
 
-    <div
-      class="ad-feat"
-      style="margin-bottom:12px;"
-    >
+    <div class="ad-feat">
       إضافة صورة أو لوجو
     </div>
-
 
     <button
       class="ad-pkg-btn"
@@ -992,36 +796,9 @@
 
   <div class="ad-pkg">
 
-    <div
-      style="
-        display:flex;
-        justify-content:space-between;
-        align-items:center;
-        margin-bottom:10px;
-      "
-    >
-
-      <div
-        style="
-          font-size:14px;
-          font-weight:700;
-        "
-      >
-        إضافة خدمة مجانية 📍
-      </div>
-
-      <div
-        style="
-          font-size:15px;
-          font-weight:900;
-          color:var(--green);
-        "
-      >
-        مجاناً
-      </div>
-
+    <div style="font-size:14px;font-weight:700;">
+      إضافة خدمة مجانية 📍
     </div>
-
 
     <div class="ad-feat">
       إضافة نشاطك في التصنيف المناسب
@@ -1031,69 +808,15 @@
       اسم + رقم واتساب
     </div>
 
-    <div
-      class="ad-feat"
-      style="margin-bottom:12px;"
-    >
+    <div class="ad-feat">
       يظهر لكل زوار الدليل
     </div>
-
 
     <button
       class="ad-pkg-btn outline"
       onclick="openWA('01016264637')"
     >
       أضف نشاطك مجاناً ←
-    </button>
-
-  </div>
-
-
-  <div
-    style="
-      margin:0 16px;
-      background:var(--bg);
-      border-radius:14px;
-      padding:14px;
-      text-align:center;
-    "
-  >
-
-    <div
-      style="
-        font-size:13px;
-        font-weight:700;
-        margin-bottom:6px;
-      "
-    >
-      تواصل معنا مباشرة
-    </div>
-
-    <div
-      style="
-        font-size:12px;
-        color:var(--muted);
-        margin-bottom:10px;
-      "
-    >
-      للاستفسار عن الإعلانات والباقات
-    </div>
-
-    <button
-      style="
-        background:var(--green);
-        color:white;
-        border:none;
-        border-radius:10px;
-        padding:10px 20px;
-        font-size:13px;
-        font-weight:700;
-        font-family:'Cairo',sans-serif;
-        cursor:pointer;
-      "
-      onclick="openWA('01016264637')"
-    >
-      📞 واتساب الإدارة
     </button>
 
   </div>
@@ -1120,7 +843,7 @@
 
 
 <!-- =====================================================
-     CHARGE WALLET
+     CHARGE
 ===================================================== -->
 
 <div
@@ -1139,35 +862,21 @@
     شحن المحفظة 💳
   </div>
 
-
   <div class="charge-box">
 
-    <div
-      style="
-        font-size:13px;
-        font-weight:700;
-        margin-bottom:10px;
-      "
-    >
+    <div>
       حول على رقم فودافون كاش
     </div>
 
-
     <div class="vodafone-badge">
 
-      <div style="font-size:22px;">
+      <div>
         📱
       </div>
 
-
       <div>
 
-        <div
-          style="
-            font-size:11px;
-            color:var(--muted);
-          "
-        >
+        <div>
           رقم فودافون كاش
         </div>
 
@@ -1176,7 +885,6 @@
         </div>
 
       </div>
-
 
       <button
         class="copy-btn"
@@ -1212,48 +920,10 @@
           .getElementById('receipt-input')
           .click()
       "
-      style="
-        border:2px dashed var(--border);
-        border-radius:12px;
-        padding:20px;
-        text-align:center;
-        cursor:pointer;
-        background:var(--bg);
-        margin-bottom:10px;
-      "
     >
 
       <div id="receipt-preview">
-
-        <div
-          style="
-            font-size:32px;
-            margin-bottom:6px;
-          "
-        >
-          📤
-        </div>
-
-        <div
-          style="
-            font-size:12px;
-            color:var(--muted);
-            font-weight:600;
-          "
-        >
-          ارفع صورة الإيصال
-        </div>
-
-        <div
-          style="
-            font-size:11px;
-            color:var(--muted);
-            margin-top:3px;
-          "
-        >
-          (لقطة شاشة أو إيصال)
-        </div>
-
+        📤 ارفع صورة الإيصال
       </div>
 
     </div>
@@ -1275,21 +945,6 @@
       إرسال طلب الشحن 📨
     </button>
 
-  </div>
-
-
-  <div
-    style="
-      margin:0 16px;
-      background:#fff3ee;
-      border-radius:12px;
-      padding:12px 14px;
-      font-size:12px;
-      color:var(--primary);
-      line-height:1.7;
-    "
-  >
-    ⚠️ بعد إرسال طلبك هيتم مراجعة الإيصال وإضافة الرصيد خلال ساعات قليلة.
   </div>
 
 </div>
@@ -1367,15 +1022,8 @@
     id="nav-home"
     onclick="switchTab('home')"
   >
-
-    <span class="ni">
-      🏠
-    </span>
-
-    <span class="nl">
-      الرئيسية
-    </span>
-
+    <span class="ni">🏠</span>
+    <span class="nl">الرئيسية</span>
   </button>
 
 
@@ -1384,15 +1032,8 @@
     id="nav-sell"
     onclick="switchTab('sell')"
   >
-
-    <div class="sell-icon">
-      🛒
-    </div>
-
-    <div class="sell-lbl">
-      بيع واشتري
-    </div>
-
+    <div class="sell-icon">🛒</div>
+    <div class="sell-lbl">بيع واشتري</div>
   </button>
 
 
@@ -1401,15 +1042,8 @@
     id="nav-ads"
     onclick="switchTab('ads')"
   >
-
-    <span class="ni">
-      📣
-    </span>
-
-    <span class="nl">
-      أعلن معنا
-    </span>
-
+    <span class="ni">📣</span>
+    <span class="nl">أعلن معنا</span>
   </button>
 
 
@@ -1418,15 +1052,8 @@
     id="nav-wallet"
     onclick="switchTab('wallet')"
   >
-
-    <span class="ni">
-      💰
-    </span>
-
-    <span class="nl">
-      محفظتي
-    </span>
-
+    <span class="ni">💰</span>
+    <span class="nl">محفظتي</span>
   </button>
 
 
@@ -1435,15 +1062,8 @@
     id="nav-account"
     onclick="switchTab('account')"
   >
-
-    <span class="ni">
-      👤
-    </span>
-
-    <span class="nl">
-      حسابي
-    </span>
-
+    <span class="ni">👤</span>
+    <span class="nl">حسابي</span>
   </button>
 
 </div>
@@ -1461,78 +1081,24 @@
   defer
 ></script>
 
-<script
-  src="js/config.js"
-  defer
-></script>
-
-<script
-  src="js/utils.js"
-  defer
-></script>
-
-<script
-  src="js/backend.js"
-  defer
-></script>
-
-<script
-  src="js/data.js"
-  defer
-></script>
-
-<script
-  src="js/user-state.js"
-  defer
-></script>
-
-<script
-  src="js/services.js"
-  defer
-></script>
-
-
-<!-- HLS PLAYER -->
+<script src="js/config.js" defer></script>
+<script src="js/utils.js" defer></script>
+<script src="js/backend.js" defer></script>
+<script src="js/data.js" defer></script>
+<script src="js/user-state.js" defer></script>
+<script src="js/services.js" defer></script>
 
 <script
   src="https://cdn.jsdelivr.net/npm/hls.js@latest"
   defer
 ></script>
 
-
-<!-- RADIO -->
-
-<script
-  src="js/radio.js"
-  defer
-></script>
-
-<script
-  src="js/marketplace.js"
-  defer
-></script>
-
-<script
-  src="js/wallet.js"
-  defer
-></script>
-
-<script
-  src="js/auth.js"
-  defer
-></script>
-
-<script
-  src="js/integrations.js"
-  defer
-></script>
-
-<script
-  src="js/app.js"
-  defer
-></script>
-
+<script src="js/radio.js" defer></script>
+<script src="js/marketplace.js" defer></script>
+<script src="js/wallet.js" defer></script>
+<script src="js/auth.js" defer></script>
+<script src="js/integrations.js" defer></script>
+<script src="js/app.js" defer></script>
 
 </body>
-
 </html>
