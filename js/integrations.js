@@ -1,18 +1,12 @@
 /* =========================================================
    دليل كفر الزيات — Integrations
-   Phase 1
 ========================================================= */
 
 
 /* ===== الطقس ===== */
 
-/*
-  في Phase 1 لا نستخدم Weather API
-  لتجنب /api/weather 404
-  ويمكن إعادة الطقس الحقيقي لاحقاً.
-*/
-
 async function fetchWeather() {
+
   const weatherEl =
     document.getElementById('w-temp');
 
@@ -23,9 +17,10 @@ async function fetchWeather() {
 }
 
 
-/* ===== واتساب ===== */
+/* ===== أرقام واتساب ===== */
 
 function normalizeEgyptPhone(phone) {
+
   const digits =
     String(phone || '')
       .replace(/\D/g, '');
@@ -46,7 +41,10 @@ function normalizeEgyptPhone(phone) {
 }
 
 
+/* ===== فتح واتساب ===== */
+
 function openWA(phone) {
+
   const normalized =
     normalizeEgyptPhone(phone);
 
@@ -58,13 +56,15 @@ function openWA(phone) {
 
   window.open(
     `https://wa.me/${normalized}`,
-    '_blank',
-    'noopener,noreferrer'
+    '_blank'
   );
 }
 
 
+/* ===== فتح واتساب برسالة ===== */
+
 function openWAMsg(phone, msg) {
+
   const normalized =
     normalizeEgyptPhone(phone);
 
@@ -79,8 +79,7 @@ function openWAMsg(phone, msg) {
 
   window.open(
     `https://wa.me/${normalized}?text=${encodeURIComponent(message)}`,
-    '_blank',
-    'noopener,noreferrer'
+    '_blank'
   );
 }
 
@@ -88,6 +87,7 @@ function openWAMsg(phone, msg) {
 /* ===== مشاركة الدليل ===== */
 
 function shareApp() {
+
   const txt =
     '🗺️ دليل كفر الزيات والقرى المجاورة\n\n' +
     '🛒 بيع واشتري أي حاجة بسهولة، واعرف كل خدمات منطقتك في مكان واحد!\n\n' +
@@ -95,7 +95,9 @@ function shareApp() {
     '👇 ادخل الدليل واكتشف اللي حواليك\n' +
     'https://dlel-kz.vercel.app';
 
+
   if (navigator.share) {
+
     navigator
       .share({
         title:
@@ -108,19 +110,20 @@ function shareApp() {
     return;
   }
 
+
   window.open(
     `https://wa.me/?text=${encodeURIComponent(txt)}`,
-    '_blank',
-    'noopener,noreferrer'
+    '_blank'
   );
 }
 
 
-/* ===== Toast ===== */
+/* ===== TOAST ===== */
 
 let toastTimer = null;
 
 function showToast(msg) {
+
   const toast =
     document.getElementById('toast');
 
@@ -138,12 +141,11 @@ function showToast(msg) {
   }
 
   toastTimer =
-    setTimeout(
-      () => {
-        toast.classList.remove('show');
-      },
-      2200
-    );
+    setTimeout(() => {
+
+      toast.classList.remove('show');
+
+    }, 2200);
 }
 
 
@@ -165,6 +167,7 @@ const adLabels = [
 
 
 function initAdCarousel() {
+
   const track =
     document.getElementById('adTrack');
 
@@ -192,19 +195,19 @@ function initAdCarousel() {
     i < slides.length;
     i++
   ) {
+
     const dot =
       document.createElement('span');
 
-    dot.className = 'ad-dot';
+    dot.className =
+      'ad-dot';
 
     if (i === 0) {
       dot.classList.add('active');
     }
 
     dot.onclick =
-      () => {
-        moveAd(i);
-      };
+      () => moveAd(i);
 
     dots.appendChild(dot);
   }
@@ -216,9 +219,11 @@ function initAdCarousel() {
 
   adRun();
 
+
   track.addEventListener(
     'touchstart',
     e => {
+
       if (!e.touches?.length) {
         return;
       }
@@ -233,11 +238,15 @@ function initAdCarousel() {
     }
   );
 
+
   track.addEventListener(
     'touchend',
     e => {
+
       if (!e.changedTouches?.length) {
+
         adRun();
+
         return;
       }
 
@@ -246,6 +255,7 @@ function initAdCarousel() {
         e.changedTouches[0].clientX;
 
       if (Math.abs(diff) > 40) {
+
         if (diff > 0) {
           nextAd();
         } else {
@@ -263,6 +273,7 @@ function initAdCarousel() {
 
 
 function adRun() {
+
   adStop();
 
   adTimer =
@@ -274,14 +285,19 @@ function adRun() {
 
 
 function adStop() {
+
   if (adTimer) {
+
     clearInterval(adTimer);
-    adTimer = null;
+
+    adTimer =
+      null;
   }
 }
 
 
 function moveAd(i) {
+
   const track =
     document.getElementById('adTrack');
 
@@ -303,8 +319,7 @@ function moveAd(i) {
   }
 
   if (i < 0) {
-    i =
-      slides.length - 1;
+    i = slides.length - 1;
   }
 
   if (i >= slides.length) {
@@ -317,6 +332,7 @@ function moveAd(i) {
     `translateX(-${adNow * 100}%)`;
 
   if (dots) {
+
     const dotItems =
       dots.children;
 
@@ -325,6 +341,7 @@ function moveAd(i) {
       j < dotItems.length;
       j++
     ) {
+
       dotItems[j].className =
         'ad-dot' +
         (
@@ -336,6 +353,7 @@ function moveAd(i) {
   }
 
   if (label) {
+
     label.textContent =
       adLabels[adNow] || '';
   }
@@ -343,10 +361,16 @@ function moveAd(i) {
 
 
 function nextAd() {
-  moveAd(adNow + 1);
+
+  moveAd(
+    adNow + 1
+  );
 }
 
 
 function prevAd() {
-  moveAd(adNow - 1);
+
+  moveAd(
+    adNow - 1
+  );
 }
