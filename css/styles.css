@@ -40,7 +40,7 @@ body {
 
 
 /* =========================================================
-   سبلاش
+   سبلاش — شاشة البداية الأصلية
 ========================================================= */
 
 #splash {
@@ -73,6 +73,7 @@ body {
     transform: scale(0.4);
     opacity: 0;
   }
+
   to {
     transform: scale(1);
     opacity: 1;
@@ -87,214 +88,40 @@ body {
   padding: 0 20px;
 }
 
-/* =========================================================
-   SPLASH SCREEN — دليل كفر الزيات
-========================================================= */
+#splash p {
+  color: rgba(255,255,255,0.85);
+  font-size: 14px;
+  margin-top: 6px;
+}
 
-#splash {
-  position: fixed;
-  inset: 0;
-
-  width: 100%;
-  height: 100dvh;
-
-  background: #064adf;
-
+.splash-dots {
   display: flex;
-  align-items: center;
-  justify-content: center;
-
-  overflow: hidden;
-
-  z-index: 9999;
-
-  opacity: 1;
-
-  transition:
-    opacity 0.45s ease,
-    visibility 0.45s ease;
+  gap: 8px;
+  margin-top: 40px;
 }
 
-
-/* الصورة الرئيسية */
-
-.splash-poster {
-  position: absolute;
-
-  inset: 0;
-
-  width: 100%;
-  height: 100%;
-
-  object-fit: cover;
-
-  object-position: center center;
-
-  transform: scale(1.02);
-
-  animation:
-    splashPosterEnter 1.8s ease-out forwards;
+.splash-dots span {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.5);
+  animation: dotBlink 1.2s infinite;
 }
 
-
-/* حركة دخول بسيطة للصورة */
-
-@keyframes splashPosterEnter {
-
-  0% {
-    transform: scale(1.09);
-    filter: brightness(0.86);
-  }
-
-  100% {
-    transform: scale(1.02);
-    filter: brightness(1);
-  }
-
+.splash-dots span:nth-child(2) {
+  animation-delay: 0.2s;
 }
 
-
-/* ظل خفيف أسفل الصورة */
-
-.splash-overlay {
-  position: absolute;
-
-  left: 0;
-  right: 0;
-  bottom: 0;
-
-  height: 22%;
-
-  pointer-events: none;
-
-  background:
-    linear-gradient(
-      to top,
-      rgba(0,0,0,0.36),
-      rgba(0,0,0,0)
-    );
+.splash-dots span:nth-child(3) {
+  animation-delay: 0.4s;
 }
 
-
-/* منطقة التحميل */
-
-.splash-loading {
-  position: absolute;
-
-  left: 50%;
-  bottom: 26px;
-
-  transform: translateX(-50%);
-
-  width: min(76%, 330px);
-
-  z-index: 3;
-
-  text-align: center;
-}
-
-
-/* النص */
-
-.splash-loading-text {
-  color: white;
-
-  font-size: 12px;
-  font-weight: 700;
-
-  margin-bottom: 8px;
-
-  text-shadow:
-    0 2px 8px rgba(0,0,0,0.4);
-}
-
-
-/* خلفية شريط التحميل */
-
-.splash-loading-track {
-  width: 100%;
-  height: 5px;
-
-  background:
-    rgba(255,255,255,0.35);
-
-  border-radius: 20px;
-
-  overflow: hidden;
-
-  backdrop-filter: blur(4px);
-}
-
-
-/* شريط التحميل */
-
-.splash-loading-bar {
-  width: 0%;
-  height: 100%;
-
-  border-radius: 20px;
-
-  background:
-    linear-gradient(
-      90deg,
-      #ff6b35,
-      #ffb347
-    );
-
-  animation:
-    splashLoading 1.8s ease-out forwards;
-}
-
-
-@keyframes splashLoading {
-
-  0% {
-    width: 0%;
-  }
-
-  35% {
-    width: 38%;
-  }
-
-  70% {
-    width: 78%;
-  }
-
-  100% {
-    width: 100%;
-  }
-
-}
-
-
-/* موبايلات طويلة */
-
-@media (max-width: 480px) {
-
-  .splash-poster {
-    object-position: center center;
-  }
-
-}
-
-
-/* موبايلات قصيرة */
-
-@media (max-height: 700px) {
-
-  .splash-loading {
-    bottom: 16px;
-  }
-
-  .splash-loading-text {
-    font-size: 10px;
-  }
-
-}
+@keyframes dotBlink {
   0%,100% {
     background: rgba(255,255,255,0.3);
     transform: scale(1);
   }
+
   50% {
     background: white;
     transform: scale(1.4);
@@ -380,32 +207,25 @@ body {
   background: transparent;
   color: white;
   cursor: pointer;
-
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-
   font-family: 'Cairo', sans-serif;
 }
 
 .header-action-icon {
   width: 38px;
   height: 38px;
-
   background: rgba(255,255,255,0.20);
   border: 1px solid rgba(255,255,255,0.35);
   border-radius: 10px;
-
   display: flex;
   align-items: center;
   justify-content: center;
-
   font-size: 17px;
   line-height: 1;
-
-  transition: transform 0.2s ease,
-              background 0.2s ease;
+  transition: transform 0.2s ease, background 0.2s ease;
 }
 
 .header-action-label {
@@ -422,9 +242,6 @@ body {
   transform: scale(0.9);
   background: rgba(255,255,255,0.30);
 }
-
-
-/* القديم — نسيبه لو فيه استخدام في مكان آخر */
 
 .hbtn {
   width: 34px;
@@ -444,7 +261,6 @@ body {
 .hbtn:active {
   transform: scale(0.9);
 }
-
 
 .search-bar {
   display: flex;
@@ -491,6 +307,7 @@ body {
     opacity: 0;
     transform: translateY(8px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -554,12 +371,11 @@ body {
   width: 50px;
   height: 50px;
   border-radius: 14px;
-  background:
-    linear-gradient(
-      135deg,
-      rgba(255,165,0,0.2),
-      rgba(255,215,0,0.1)
-    );
+  background: linear-gradient(
+    135deg,
+    rgba(255,165,0,0.2),
+    rgba(255,215,0,0.1)
+  );
   display: flex;
   align-items: center;
   justify-content: center;
@@ -842,9 +658,17 @@ body {
 }
 
 @keyframes heartPop {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.3); }
-  100% { transform: scale(1); }
+  0% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.3);
+  }
+
+  100% {
+    transform: scale(1);
+  }
 }
 
 
@@ -1389,8 +1213,13 @@ textarea.finput {
 }
 
 @keyframes rLive {
-  0%,100% { opacity: 1; }
-  50% { opacity: 0.3; }
+  0%,100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.3;
+  }
 }
 
 
@@ -1454,7 +1283,9 @@ textarea.finput {
 }
 
 
-/* ===== الباسورد ===== */
+/* =========================================================
+   الباسورد
+========================================================= */
 
 .pass-wrap {
   position: relative;
@@ -1480,7 +1311,9 @@ textarea.finput {
 }
 
 
-/* ===== نسيت الباسورد ===== */
+/* =========================================================
+   نسيت الباسورد
+========================================================= */
 
 .forgot-link {
   text-align: center;
@@ -2052,12 +1885,7 @@ input[type="number"] {
   text-align: right;
 }
 
-
-/*
-  الكاروسيل يظل LTR
-  حتى يستمر JavaScript في تحريكه بشكل صحيح.
-*/
-
+/* الكاروسيل يظل LTR */
 .ad-carousel {
   direction: ltr;
 }
@@ -2114,7 +1942,7 @@ input[type="number"] {
 
 
 /* =========================================================
-   تحسين خاص بالموبايلات الصغيرة
+   تحسين الموبايلات الصغيرة
 ========================================================= */
 
 @media (max-width: 390px) {
