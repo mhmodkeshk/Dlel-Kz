@@ -261,5 +261,292 @@ textarea.finput { resize: none; height: 80px; }
 .recent-pill:hover { border-color: var(--primary); color: var(--primary); background: var(--primary-light); }
 .recent-pill .rp-del { font-size: 12px; opacity: 0.4; cursor: pointer; }
 .recent-pill .rp-del:hover { opacity: 1; }
+/* =========================================================
+   RTL FIX — دليل كفر الزيات
+   تثبيت الاتجاه العربي في جميع أجزاء التطبيق
+========================================================= */
 
+html {
+  direction: rtl;
+}
+
+body {
+  direction: rtl;
+  text-align: right;
+}
+
+.app {
+  direction: rtl;
+  text-align: right;
+}
+
+
+/* ===== الهيدر ===== */
+
+.header {
+  direction: rtl;
+}
+
+.header-top {
+  direction: rtl;
+}
+
+.brand {
+  direction: rtl;
+}
+
+.header-btns {
+  direction: rtl;
+}
+
+.search-bar {
+  direction: rtl;
+}
+
+.search-bar input {
+  direction: rtl;
+  text-align: right;
+}
+
+
+/* ===== العناوين ===== */
+
+.sec-title {
+  direction: rtl;
+  text-align: right;
+}
+
+.sec-title .count {
+  margin-right: auto;
+  margin-left: 0;
+}
+
+
+/* ===== التصنيفات ===== */
+
+.cats-grid {
+  direction: rtl;
+}
+
+.cat-card {
+  direction: rtl;
+}
+
+
+/* ===== الخدمات ===== */
+
+.service-card {
+  direction: rtl;
+  text-align: right;
+}
+
+.service-actions {
+  direction: rtl;
+}
+
+.service-name,
+.service-phone {
+  text-align: right;
+}
+
+
+/* ===== تفاصيل النشاط ===== */
+
+.svc-detail-wrap {
+  direction: rtl;
+}
+
+.svc-detail-header {
+  direction: rtl;
+  text-align: right;
+}
+
+.svc-actions {
+  direction: rtl;
+}
+
+
+/*
+  رقم الهاتف فقط يظل LTR
+  حتى يظهر الرقم بشكل صحيح.
+*/
+
+.svc-detail-phone {
+  direction: ltr;
+  unicode-bidi: embed;
+  text-align: right;
+}
+
+
+/* ===== بيع واشتري ===== */
+
+.product-card {
+  direction: rtl;
+  text-align: right;
+}
+
+.product-name,
+.product-price,
+.product-seller {
+  text-align: right;
+}
+
+.form-card {
+  direction: rtl;
+  text-align: right;
+}
+
+.finput {
+  direction: rtl;
+  text-align: right;
+}
+
+input[type="tel"],
+input[type="number"] {
+  direction: ltr;
+  text-align: right;
+}
+
+
+/* ===== الحساب ===== */
+
+.acc-header,
+.acc-card,
+.acc-item {
+  direction: rtl;
+}
+
+.acc-item {
+  text-align: right;
+}
+
+
+/* ===== المحفظة ===== */
+
+.wallet-card,
+.wallet-btns,
+.wallet-btn,
+.charge-box {
+  direction: rtl;
+  text-align: right;
+}
+
+
+/* ===== سجل المعاملات ===== */
+
+.tx-item {
+  direction: rtl;
+}
+
+.tx-amount {
+  margin-right: auto;
+  margin-left: 0;
+}
+
+
+/* ===== المفضلة ===== */
+
+.fav-section-home,
+.fav-sh-item {
+  direction: rtl;
+  text-align: right;
+}
+
+
+/* ===== البحث ===== */
+
+.recent-search-area,
+.recent-pills {
+  direction: rtl;
+}
+
+
+/* ===== شاشة الدخول ===== */
+
+.auth-screen,
+.auth-tabs {
+  direction: rtl;
+}
+
+
+/* ===== الإعلانات ===== */
+
+.ad-pkg {
+  direction: rtl;
+  text-align: right;
+}
+
+
+/*
+  مهم جدًا:
+  الكاروسيل نفسه لازم يظل LTR
+  لأن JavaScript يحركه بـ translateX بالسالب.
+*/
+
+.ad-carousel {
+  direction: ltr;
+}
+
+.ad-label,
+.ad-dots {
+  direction: rtl;
+}
+
+
+/* ===== الراديو ===== */
+
+.radio-bar {
+  direction: rtl;
+  text-align: right;
+}
+
+
+/* ===== زر الرجوع ===== */
+
+.back-btn {
+  direction: rtl;
+}
+
+
+/* =========================================================
+   BOTTOM NAV RTL
+========================================================= */
+
+.bottom-nav {
+  direction: rtl;
+}
+
+
+/*
+  الترتيب المطلوب بصريًا من اليمين:
+  الرئيسية
+  بيع واشتري
+  أعلن معنا
+  محفظتي
+  حسابي
+*/
+
+.nbtn,
+.sell-btn-wrap {
+  direction: rtl;
+}
+
+
+/* =========================================================
+   RTL GRID/FLEX SAFETY
+========================================================= */
+
+#screen-home,
+#screen-category,
+#screen-search,
+#screen-service-detail,
+#screen-sell,
+#screen-ads,
+#screen-wallet,
+#screen-charge,
+#screen-myproducts,
+#screen-product-detail,
+#screen-account {
+  direction: rtl;
+}
 .shared-badge { background: rgba(255,255,255,0.2); border-radius: 20px; padding: 2px 8px; font-size: 9px; color: white; }
