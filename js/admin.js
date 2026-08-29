@@ -7,40 +7,29 @@ let adminBusinesses = [];
 ========================================================= */
 
 async function adminInit() {
-  const status =
-    document.getElementById('admin-status');
+  const status = document.getElementById('admin-status');
 
   try {
     if (!await initBackend()) {
       throw new Error('CONFIG');
     }
 
-    if (
-      !currentUser ||
-      currentUser.role !== 'admin'
-    ) {
+    if (!currentUser || currentUser.role !== 'admin') {
       throw new Error('DENIED');
     }
 
     adminProfile = currentUser;
 
     status.hidden = true;
-
-    document
-      .getElementById('admin-app')
-      .hidden = false;
+    document.getElementById('admin-app').hidden = false;
 
     bindTabs();
 
     await loadAdminCategories();
-
     await refreshAdmin();
 
   } catch (e) {
-    console.error(
-      'Admin init error:',
-      e
-    );
+    console.error('Admin init error:', e);
 
     status.classList.add('error');
 
@@ -50,6 +39,7 @@ async function adminInit() {
         : 'غير مصرح لك بفتح لوحة الإدارة. سجل الدخول بحساب Admin.';
   }
 }
+
 
 /* =========================================================
    TABS
@@ -64,29 +54,20 @@ function bindTabs() {
 
         document
           .querySelectorAll('.admin-tab')
-          .forEach(x =>
-            x.classList.remove('active')
-          );
+          .forEach(x => x.classList.remove('active'));
 
         button.classList.add('active');
 
-        const tab =
-          button.dataset.tab;
+        const tab = button.dataset.tab;
 
-        document
-          .getElementById('admin-products')
-          .hidden =
-            tab !== 'products';
+        document.getElementById('admin-products').hidden =
+          tab !== 'products';
 
-        document
-          .getElementById('admin-businesses')
-          .hidden =
-            tab !== 'businesses';
+        document.getElementById('admin-businesses').hidden =
+          tab !== 'businesses';
 
-        document
-          .getElementById('admin-charges')
-          .hidden =
-            tab !== 'charges';
+        document.getElementById('admin-charges').hidden =
+          tab !== 'charges';
 
         if (tab === 'businesses') {
           await loadBusinessesForAdmin();
@@ -94,6 +75,7 @@ function bindTabs() {
       };
     });
 }
+
 
 /* =========================================================
    REFRESH
@@ -115,21 +97,16 @@ async function refreshAdmin() {
 
     db
       .from('charge_requests')
-      .select(
-        '*,profiles:user_id(name,phone)'
-      )
+      .select('*,profiles:user_id(name,phone)')
       .eq('status', 'pending')
       .order('created_at'),
 
     db
       .from('profiles')
-      .select(
-        '*',
-        {
-          count: 'exact',
-          head: true
-        }
-      ),
+      .select('*', {
+        count: 'exact',
+        head: true
+      }),
 
     db
       .from('businesses')
@@ -137,17 +114,10 @@ async function refreshAdmin() {
       .eq('status', 'pending')
   ]);
 
-  const products =
-    productsResult.data || [];
-
-  const charges =
-    chargesResult.data || [];
-
-  const users =
-    usersResult.count || 0;
-
-  const pendingBusinesses =
-    pendingBusinessResult.data || [];
+  const products = productsResult.data || [];
+  const charges = chargesResult.data || [];
+  const users = usersResult.count || 0;
+  const pendingBusinesses = pendingBusinessResult.data || [];
 
   renderStats(
     products,
@@ -156,14 +126,11 @@ async function refreshAdmin() {
     pendingBusinesses.length
   );
 
-  renderPendingProducts(
-    products
-  );
+  renderPendingProducts(products);
 
-  await renderCharges(
-    charges
-  );
+  await renderCharges(charges);
 }
+
 
 /* =========================================================
    STATS
@@ -175,42 +142,38 @@ function renderStats(
   users,
   businessPending
 ) {
-  document
-    .getElementById('admin-stats')
-    .innerHTML = `
+  document.getElementById('admin-stats').innerHTML = `
 
-      <div class="stat">
-        <span>مستخدمون</span>
-        <b>${users}</b>
-      </div>
+    <div class="stat">
+      <span>مستخدمون</span>
+      <b>${users}</b>
+    </div>
 
-      <div class="stat">
-        <span>منتجات معلقة</span>
-        <b>${products.length}</b>
-      </div>
+    <div class="stat">
+      <span>منتجات معلقة</span>
+      <b>${products.length}</b>
+    </div>
 
-      <div class="stat">
-        <span>محلات معلقة</span>
-        <b>${businessPending}</b>
-      </div>
+    <div class="stat">
+      <span>محلات معلقة</span>
+      <b>${businessPending}</b>
+    </div>
 
-      <div class="stat">
-        <span>طلبات شحن</span>
-        <b>${charges.length}</b>
-      </div>
+    <div class="stat">
+      <span>طلبات شحن</span>
+      <b>${charges.length}</b>
+    </div>
 
-    `;
+  `;
 }
+
 
 /* =========================================================
    PRODUCTS
 ========================================================= */
 
 function renderPendingProducts(list) {
-  const el =
-    document.getElementById(
-      'admin-products'
-    );
+  const el = document.getElementById('admin-products');
 
   el.innerHTML =
     list.map(p => `
@@ -236,8 +199,7 @@ function renderPendingProducts(list) {
 
             <div class="admin-meta">
               ${escapeHTML(
-                p.description ||
-                'بدون وصف'
+                p.description || 'بدون وصف'
               )}
             </div>
 
@@ -247,24 +209,14 @@ function renderPendingProducts(list) {
 
             <button
               class="admin-btn ok"
-              onclick="
-                reviewProduct(
-                  '${p.id}',
-                  'active'
-                )
-              "
+              onclick="reviewProduct('${p.id}','active')"
             >
               قبول
             </button>
 
             <button
               class="admin-btn no"
-              onclick="
-                reviewProduct(
-                  '${p.id}',
-                  'rejected'
-                )
-              "
+              onclick="reviewProduct('${p.id}','rejected')"
             >
               رفض
             </button>
@@ -284,23 +236,16 @@ function renderPendingProducts(list) {
     `;
 }
 
-async function reviewProduct(
-  id,
-  status
-) {
+
+async function reviewProduct(id, status) {
   const { error } =
     await db
       .from('products')
-      .update({
-        status
-      })
+      .update({ status })
       .eq('id', id);
 
   if (error) {
-    console.error(
-      'Review product error:',
-      error
-    );
+    console.error('Review product error:', error);
 
     return alert(
       'تعذر تنفيذ العملية'
@@ -310,26 +255,19 @@ async function reviewProduct(
   await refreshAdmin();
 }
 
+
 /* =========================================================
    CATEGORIES
 ========================================================= */
 
 async function loadAdminCategories() {
-  const {
-    data,
-    error
-  } =
+  const { data, error } =
     await db
       .from('categories')
-      .select(
-        'id,name,icon,sort_order'
-      )
-      .order(
-        'sort_order',
-        {
-          ascending: true
-        }
-      );
+      .select('id,name,icon,sort_order')
+      .order('sort_order', {
+        ascending: true
+      });
 
   if (error) {
     console.error(
@@ -340,17 +278,9 @@ async function loadAdminCategories() {
     return;
   }
 
-  adminCategories =
-    data || [];
+  adminCategories = data || [];
 
-  const select =
-    document.getElementById(
-      'business-category'
-    );
-
-  if (!select) return;
-
-  select.innerHTML =
+  const options =
     `
       <option value="">
         اختر التصنيف
@@ -358,14 +288,31 @@ async function loadAdminCategories() {
     `
     +
     adminCategories.map(c => `
-
       <option value="${c.id}">
         ${escapeHTML(c.icon || '📍')}
         ${escapeHTML(c.name)}
       </option>
-
     `).join('');
+
+  const createSelect =
+    document.getElementById(
+      'business-category'
+    );
+
+  const editSelect =
+    document.getElementById(
+      'edit-business-category'
+    );
+
+  if (createSelect) {
+    createSelect.innerHTML = options;
+  }
+
+  if (editSelect) {
+    editSelect.innerHTML = options;
+  }
 }
+
 
 /* =========================================================
    CREATE BUSINESS DIRECTLY AS ADMIN
@@ -382,98 +329,75 @@ async function createBusinessFromAdmin() {
 
   const categoryId =
     Number(
-      document
-        .getElementById(
-          'business-category'
-        )
-        .value
+      document.getElementById(
+        'business-category'
+      ).value
     );
 
   const name =
     clampText(
-      document
-        .getElementById(
-          'business-name'
-        )
-        .value,
+      document.getElementById(
+        'business-name'
+      ).value,
       120
     );
 
   const phone =
-    document
-      .getElementById(
-        'business-phone'
-      )
-      .value
-      .trim();
+    document.getElementById(
+      'business-phone'
+    ).value.trim();
 
   const whatsapp =
-    document
-      .getElementById(
-        'business-whatsapp'
-      )
-      .value
-      .trim();
+    document.getElementById(
+      'business-whatsapp'
+    ).value.trim();
 
   const village =
     clampText(
-      document
-        .getElementById(
-          'business-village'
-        )
-        .value,
+      document.getElementById(
+        'business-village'
+      ).value,
       100
     );
 
   const address =
     clampText(
-      document
-        .getElementById(
-          'business-address'
-        )
-        .value,
+      document.getElementById(
+        'business-address'
+      ).value,
       300
     );
 
   const description =
     clampText(
-      document
-        .getElementById(
-          'business-description'
-        )
-        .value,
+      document.getElementById(
+        'business-description'
+      ).value,
       1500
     );
 
   const mapsUrl =
-    document
-      .getElementById(
-        'business-maps'
-      )
-      .value
-      .trim();
+    document.getElementById(
+      'business-maps'
+    ).value.trim();
 
   const verified =
-    document
-      .getElementById(
-        'business-verified'
-      )
-      .checked;
+    document.getElementById(
+      'business-verified'
+    ).checked;
 
   const featured =
-    document
-      .getElementById(
-        'business-featured'
-      )
-      .checked;
+    document.getElementById(
+      'business-featured'
+    ).checked;
+
 
   if (
     !categoryId ||
     !name ||
     !/^01\d{9}$/.test(phone)
   ) {
-    message.style.color =
-      '#dc2626';
+    message.style.color = '#dc2626';
 
     message.textContent =
       '⚠️ اختر التصنيف واكتب اسم النشاط ورقم موبايل صحيح.';
@@ -481,12 +405,12 @@ async function createBusinessFromAdmin() {
     return;
   }
 
+
   if (
     whatsapp &&
     !/^01\d{9}$/.test(whatsapp)
   ) {
-    message.style.color =
-      '#dc2626';
+    message.style.color = '#dc2626';
 
     message.textContent =
       '⚠️ رقم واتساب غير صحيح.';
@@ -494,50 +418,43 @@ async function createBusinessFromAdmin() {
     return;
   }
 
+
+  if (
+    mapsUrl &&
+    !/^https?:\/\//i.test(mapsUrl)
+  ) {
+    message.style.color = '#dc2626';
+
+    message.textContent =
+      '⚠️ رابط Google Maps غير صحيح.';
+
+    return;
+  }
+
+
   try {
 
-    const {
-      data,
-      error
-    } =
+    const { data, error } =
       await db.rpc(
         'admin_create_business',
         {
-          p_category_id:
-            categoryId,
-
-          p_name:
-            name,
-
-          p_phone:
-            phone,
-
-          p_whatsapp:
-            whatsapp || null,
-
-          p_address:
-            address || null,
-
+          p_category_id: categoryId,
+          p_name: name,
+          p_phone: phone,
+          p_whatsapp: whatsapp || null,
+          p_address: address || null,
           p_village:
-            village ||
-            'كفر الزيات',
-
+            village || 'كفر الزيات',
           p_description:
             description || null,
-
           p_maps_url:
             mapsUrl || null,
-
-          p_verified:
-            verified,
-
-          p_featured:
-            featured,
-
-          p_sort_order:
-            0
+          p_verified: verified,
+          p_featured: featured,
+          p_sort_order: 0
         }
       );
+
 
     if (error) {
       console.error(
@@ -548,10 +465,12 @@ async function createBusinessFromAdmin() {
       throw error;
     }
 
+
     console.log(
       'Business created:',
       data
     );
+
 
     message.style.color =
       '#16a34a';
@@ -559,11 +478,12 @@ async function createBusinessFromAdmin() {
     message.textContent =
       '✅ تم إضافة النشاط ونشره مباشرة في الدليل.';
 
+
     clearBusinessForm();
 
     await loadBusinessesForAdmin();
-
     await refreshAdmin();
+
 
   } catch (e) {
 
@@ -584,80 +504,63 @@ async function createBusinessFromAdmin() {
   }
 }
 
-function clearBusinessForm() {
-
-  document
-    .getElementById(
-      'business-category'
-    )
-    .value = '';
-
-  document
-    .getElementById(
-      'business-name'
-    )
-    .value = '';
-
-  document
-    .getElementById(
-      'business-phone'
-    )
-    .value = '';
-
-  document
-    .getElementById(
-      'business-whatsapp'
-    )
-    .value = '';
-
-  document
-    .getElementById(
-      'business-village'
-    )
-    .value =
-      'كفر الزيات';
-
-  document
-    .getElementById(
-      'business-address'
-    )
-    .value = '';
-
-  document
-    .getElementById(
-      'business-description'
-    )
-    .value = '';
-
-  document
-    .getElementById(
-      'business-maps'
-    )
-    .value = '';
-
-  document
-    .getElementById(
-      'business-verified'
-    )
-    .checked = false;
-
-  document
-    .getElementById(
-      'business-featured'
-    )
-    .checked = false;
-}
 
 /* =========================================================
-   BUSINESSES
+   CLEAR CREATE FORM
+========================================================= */
+
+function clearBusinessForm() {
+
+  document.getElementById(
+    'business-category'
+  ).value = '';
+
+  document.getElementById(
+    'business-name'
+  ).value = '';
+
+  document.getElementById(
+    'business-phone'
+  ).value = '';
+
+  document.getElementById(
+    'business-whatsapp'
+  ).value = '';
+
+  document.getElementById(
+    'business-village'
+  ).value =
+    'كفر الزيات';
+
+  document.getElementById(
+    'business-address'
+  ).value = '';
+
+  document.getElementById(
+    'business-description'
+  ).value = '';
+
+  document.getElementById(
+    'business-maps'
+  ).value = '';
+
+  document.getElementById(
+    'business-verified'
+  ).checked = false;
+
+  document.getElementById(
+    'business-featured'
+  ).checked = false;
+}
+
+
+/* =========================================================
+   LOAD BUSINESSES
 ========================================================= */
 
 async function loadBusinessesForAdmin() {
 
-  const {
-    data,
-    error
-  } =
+  const { data, error } =
     await db
       .from('businesses')
       .select(`
@@ -688,6 +591,7 @@ async function loadBusinessesForAdmin() {
         }
       );
 
+
   if (error) {
 
     console.error(
@@ -698,13 +602,19 @@ async function loadBusinessesForAdmin() {
     return;
   }
 
+
   adminBusinesses =
     data || [];
 
-  renderPendingBusinesses();
 
+  renderPendingBusinesses();
   renderAllBusinesses();
 }
+
+
+/* =========================================================
+   PENDING BUSINESSES
+========================================================= */
 
 function renderPendingBusinesses() {
 
@@ -713,10 +623,13 @@ function renderPendingBusinesses() {
       'admin-business-pending'
     );
 
+
   const pending =
     adminBusinesses.filter(
-      b => b.status === 'pending'
+      b =>
+        b.status === 'pending'
     );
+
 
   el.innerHTML =
     pending.map(
@@ -734,12 +647,18 @@ function renderPendingBusinesses() {
     `;
 }
 
+
+/* =========================================================
+   ALL BUSINESSES
+========================================================= */
+
 function renderAllBusinesses() {
 
   const el =
     document.getElementById(
       'admin-business-list'
     );
+
 
   el.innerHTML =
     adminBusinesses.map(
@@ -757,6 +676,11 @@ function renderAllBusinesses() {
     `;
 }
 
+
+/* =========================================================
+   BUSINESS CARD
+========================================================= */
+
 function businessCard(
   b,
   pendingMode
@@ -770,7 +694,9 @@ function businessCard(
     b.categories?.icon ||
     '📍';
 
+
   const statusLabels = {
+
     pending:
       '⏳ معلق',
 
@@ -782,7 +708,9 @@ function businessCard(
 
     suspended:
       '⛔ موقوف'
+
   };
+
 
   return `
 
@@ -814,11 +742,21 @@ function businessCard(
               : ''
           }
 
+          ${
+            b.village
+              ? `
+                <div class="admin-meta">
+                  🏘️
+                  ${escapeHTML(b.village)}
+                </div>
+              `
+              : ''
+          }
+
           <div class="admin-meta">
+
             ${
-              statusLabels[
-                b.status
-              ] ||
+              statusLabels[b.status] ||
               escapeHTML(b.status)
             }
 
@@ -833,11 +771,27 @@ function businessCard(
                 ? ' • ⭐ مميز'
                 : ''
             }
+
           </div>
 
         </div>
 
+
         <div class="admin-actions">
+
+          <!-- زر تعديل -->
+
+          <button
+            class="admin-btn view"
+            onclick="
+              openBusinessEdit(
+                '${b.id}'
+              )
+            "
+          >
+            ✏️ تعديل
+          </button>
+
 
           ${
             pendingMode
@@ -869,6 +823,7 @@ function businessCard(
               : ''
           }
 
+
           ${
             b.status === 'active'
               ? `
@@ -886,6 +841,7 @@ function businessCard(
               `
               : ''
           }
+
 
           ${
             b.status === 'suspended' ||
@@ -906,6 +862,7 @@ function businessCard(
               : ''
           }
 
+
           <button
             class="admin-btn view"
             onclick="
@@ -915,12 +872,15 @@ function businessCard(
               )
             "
           >
+
             ${
               b.verified
                 ? 'إلغاء التوثيق'
                 : 'توثيق'
             }
+
           </button>
+
 
           <button
             class="admin-btn view"
@@ -931,12 +891,15 @@ function businessCard(
               )
             "
           >
+
             ${
               b.featured
                 ? 'إلغاء التمييز'
                 : '⭐ تمييز'
             }
+
           </button>
+
 
           <button
             class="admin-btn no"
@@ -957,6 +920,429 @@ function businessCard(
   `;
 }
 
+
+/* =========================================================
+   OPEN EDIT BUSINESS
+========================================================= */
+
+function openBusinessEdit(id) {
+
+  const business =
+    adminBusinesses.find(
+      b => b.id === id
+    );
+
+
+  if (!business) {
+    return alert(
+      'تعذر العثور على النشاط'
+    );
+  }
+
+
+  document.getElementById(
+    'edit-business-id'
+  ).value =
+    business.id;
+
+
+  document.getElementById(
+    'edit-business-category'
+  ).value =
+    business.category_id || '';
+
+
+  document.getElementById(
+    'edit-business-name'
+  ).value =
+    business.name || '';
+
+
+  document.getElementById(
+    'edit-business-phone'
+  ).value =
+    business.phone || '';
+
+
+  document.getElementById(
+    'edit-business-whatsapp'
+  ).value =
+    business.whatsapp || '';
+
+
+  document.getElementById(
+    'edit-business-village'
+  ).value =
+    business.village || '';
+
+
+  document.getElementById(
+    'edit-business-address'
+  ).value =
+    business.address || '';
+
+
+  document.getElementById(
+    'edit-business-description'
+  ).value =
+    business.description || '';
+
+
+  document.getElementById(
+    'edit-business-maps'
+  ).value =
+    business.maps_url || '';
+
+
+  document.getElementById(
+    'edit-business-verified'
+  ).checked =
+    Boolean(
+      business.verified
+    );
+
+
+  document.getElementById(
+    'edit-business-featured'
+  ).checked =
+    Boolean(
+      business.featured
+    );
+
+
+  document.getElementById(
+    'edit-business-status'
+  ).value =
+    business.status ||
+    'active';
+
+
+  document.getElementById(
+    'edit-business-title'
+  ).textContent =
+    business.name;
+
+
+  const message =
+    document.getElementById(
+      'business-edit-message'
+    );
+
+  message.textContent = '';
+
+
+  const card =
+    document.getElementById(
+      'business-edit-card'
+    );
+
+  card.style.display =
+    'block';
+
+
+  card.scrollIntoView({
+    behavior: 'smooth',
+    block: 'start'
+  });
+}
+
+
+/* =========================================================
+   CANCEL EDIT
+========================================================= */
+
+function cancelBusinessEdit() {
+
+  document.getElementById(
+    'business-edit-card'
+  ).style.display =
+    'none';
+
+
+  document.getElementById(
+    'business-edit-message'
+  ).textContent =
+    '';
+
+
+  document.getElementById(
+    'edit-business-id'
+  ).value =
+    '';
+}
+
+
+/* =========================================================
+   SAVE BUSINESS EDIT
+========================================================= */
+
+async function saveBusinessEdit() {
+
+  const message =
+    document.getElementById(
+      'business-edit-message'
+    );
+
+
+  message.textContent = '';
+
+
+  const id =
+    document.getElementById(
+      'edit-business-id'
+    ).value;
+
+
+  const categoryId =
+    Number(
+      document.getElementById(
+        'edit-business-category'
+      ).value
+    );
+
+
+  const name =
+    clampText(
+      document.getElementById(
+        'edit-business-name'
+      ).value,
+      120
+    );
+
+
+  const phone =
+    document.getElementById(
+      'edit-business-phone'
+    ).value.trim();
+
+
+  const whatsapp =
+    document.getElementById(
+      'edit-business-whatsapp'
+    ).value.trim();
+
+
+  const village =
+    clampText(
+      document.getElementById(
+        'edit-business-village'
+      ).value,
+      100
+    );
+
+
+  const address =
+    clampText(
+      document.getElementById(
+        'edit-business-address'
+      ).value,
+      300
+    );
+
+
+  const description =
+    clampText(
+      document.getElementById(
+        'edit-business-description'
+      ).value,
+      1500
+    );
+
+
+  const mapsUrl =
+    document.getElementById(
+      'edit-business-maps'
+    ).value.trim();
+
+
+  const verified =
+    document.getElementById(
+      'edit-business-verified'
+    ).checked;
+
+
+  const featured =
+    document.getElementById(
+      'edit-business-featured'
+    ).checked;
+
+
+  const status =
+    document.getElementById(
+      'edit-business-status'
+    ).value;
+
+
+  if (!id) {
+
+    message.style.color =
+      '#dc2626';
+
+    message.textContent =
+      '❌ رقم النشاط غير موجود.';
+
+    return;
+  }
+
+
+  if (
+    !categoryId ||
+    !name ||
+    !/^01\d{9}$/.test(phone)
+  ) {
+
+    message.style.color =
+      '#dc2626';
+
+    message.textContent =
+      '⚠️ اختر التصنيف واكتب اسم النشاط ورقم موبايل صحيح.';
+
+    return;
+  }
+
+
+  if (
+    whatsapp &&
+    !/^01\d{9}$/.test(whatsapp)
+  ) {
+
+    message.style.color =
+      '#dc2626';
+
+    message.textContent =
+      '⚠️ رقم واتساب غير صحيح.';
+
+    return;
+  }
+
+
+  if (
+    mapsUrl &&
+    !/^https?:\/\//i.test(mapsUrl)
+  ) {
+
+    message.style.color =
+      '#dc2626';
+
+    message.textContent =
+      '⚠️ رابط Google Maps غير صحيح.';
+
+    return;
+  }
+
+
+  if (
+    ![
+      'active',
+      'pending',
+      'suspended',
+      'rejected'
+    ].includes(status)
+  ) {
+
+    message.style.color =
+      '#dc2626';
+
+    message.textContent =
+      '⚠️ حالة النشاط غير صحيحة.';
+
+    return;
+  }
+
+
+  try {
+
+    const { error } =
+      await db
+        .from('businesses')
+        .update({
+
+          category_id:
+            categoryId,
+
+          name,
+
+          phone,
+
+          whatsapp:
+            whatsapp || null,
+
+          village:
+            village ||
+            'كفر الزيات',
+
+          address:
+            address || null,
+
+          description:
+            description || null,
+
+          maps_url:
+            mapsUrl || null,
+
+          verified,
+
+          featured,
+
+          status
+
+        })
+        .eq(
+          'id',
+          id
+        );
+
+
+    if (error) {
+
+      console.error(
+        'Save business edit error:',
+        error
+      );
+
+      throw error;
+    }
+
+
+    message.style.color =
+      '#16a34a';
+
+    message.textContent =
+      '✅ تم حفظ التعديلات بنجاح.';
+
+
+    await loadBusinessesForAdmin();
+
+    await refreshAdmin();
+
+
+    setTimeout(() => {
+
+      cancelBusinessEdit();
+
+    }, 700);
+
+
+  } catch (e) {
+
+    console.error(
+      'Business edit failed:',
+      e
+    );
+
+    message.style.color =
+      '#dc2626';
+
+    message.textContent =
+      '❌ تعذر حفظ التعديلات: ' +
+      (
+        e.message ||
+        'خطأ غير معروف'
+      );
+  }
+}
+
+
 /* =========================================================
    BUSINESS REVIEW
 ========================================================= */
@@ -966,9 +1352,7 @@ async function reviewBusiness(
   action
 ) {
 
-  const {
-    error
-  } =
+  const { error } =
     await db.rpc(
       'admin_review_business',
       {
@@ -979,6 +1363,7 @@ async function reviewBusiness(
           action
       }
     );
+
 
   if (error) {
 
@@ -993,10 +1378,11 @@ async function reviewBusiness(
     );
   }
 
-  await loadBusinessesForAdmin();
 
+  await loadBusinessesForAdmin();
   await refreshAdmin();
 }
+
 
 /* =========================================================
    VERIFIED
@@ -1007,9 +1393,7 @@ async function toggleBusinessVerified(
   verified
 ) {
 
-  const {
-    error
-  } =
+  const { error } =
     await db.rpc(
       'admin_set_business_verified',
       {
@@ -1020,6 +1404,7 @@ async function toggleBusinessVerified(
           verified
       }
     );
+
 
   if (error) {
 
@@ -1033,8 +1418,10 @@ async function toggleBusinessVerified(
     );
   }
 
+
   await loadBusinessesForAdmin();
 }
+
 
 /* =========================================================
    FEATURED
@@ -1045,9 +1432,7 @@ async function toggleBusinessFeatured(
   featured
 ) {
 
-  const {
-    error
-  } =
+  const { error } =
     await db.rpc(
       'admin_set_business_featured',
       {
@@ -1062,6 +1447,7 @@ async function toggleBusinessFeatured(
       }
     );
 
+
   if (error) {
 
     console.error(
@@ -1074,8 +1460,10 @@ async function toggleBusinessFeatured(
     );
   }
 
+
   await loadBusinessesForAdmin();
 }
+
 
 /* =========================================================
    DELETE BUSINESS
@@ -1091,13 +1479,13 @@ async function deleteBusiness(id) {
     return;
   }
 
-  const {
-    error
-  } =
+
+  const { error } =
     await db
       .from('businesses')
       .delete()
       .eq('id', id);
+
 
   if (error) {
 
@@ -1111,10 +1499,11 @@ async function deleteBusiness(id) {
     );
   }
 
-  await loadBusinessesForAdmin();
 
+  await loadBusinessesForAdmin();
   await refreshAdmin();
 }
+
 
 /* =========================================================
    CHARGES
@@ -1127,11 +1516,14 @@ async function renderCharges(list) {
       'admin-charges'
     );
 
+
   const blocks = [];
+
 
   for (const r of list) {
 
     let url = '';
+
 
     const { data } =
       await db.storage
@@ -1141,9 +1533,11 @@ async function renderCharges(list) {
           300
         );
 
+
     url =
       data?.signedUrl ||
       '';
+
 
     blocks.push(`
 
@@ -1165,6 +1559,7 @@ async function renderCharges(list) {
               جنيه
             </b>
 
+
             <div class="admin-meta">
 
               ${escapeHTML(
@@ -1181,6 +1576,7 @@ async function renderCharges(list) {
               )}
 
             </div>
+
 
             ${
               url
@@ -1206,6 +1602,7 @@ async function renderCharges(list) {
 
           </div>
 
+
           <div class="admin-actions">
 
             <button
@@ -1219,6 +1616,7 @@ async function renderCharges(list) {
             >
               اعتماد وإضافة الرصيد
             </button>
+
 
             <button
               class="admin-btn no"
@@ -1241,6 +1639,7 @@ async function renderCharges(list) {
     `);
   }
 
+
   el.innerHTML =
     blocks.join('')
     ||
@@ -1250,6 +1649,11 @@ async function renderCharges(list) {
       </div>
     `;
 }
+
+
+/* =========================================================
+   REVIEW CHARGE
+========================================================= */
 
 async function reviewCharge(
   id,
@@ -1266,9 +1670,8 @@ async function reviewCharge(
     return;
   }
 
-  const {
-    error
-  } =
+
+  const { error } =
     await db.rpc(
       'admin_review_charge',
       {
@@ -1279,6 +1682,7 @@ async function reviewCharge(
           approve
       }
     );
+
 
   if (error) {
 
@@ -1293,8 +1697,10 @@ async function reviewCharge(
     );
   }
 
+
   await refreshAdmin();
 }
+
 
 /* =========================================================
    START
