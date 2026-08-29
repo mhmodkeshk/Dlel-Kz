@@ -1,288 +1,1442 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
+
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes"
+>
+
 <title>دليل كفر الزيات و القري المجاوره</title>
-<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/styles.css">
+
+<link
+  href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap"
+  rel="stylesheet"
+>
+
+<link
+  rel="stylesheet"
+  href="css/styles.css"
+>
+
 </head>
+
 <body>
 
-<!-- سبلاش -->
+
+<!-- =====================================================
+     SPLASH
+===================================================== -->
+
 <div id="splash">
-  <div class="splash-logo">🗺️</div>
-  <h1>دليل كفر الزيات و القري المجاوره</h1>
-  <p>كل خدمات مدينتك في مكان واحد</p>
-  <div class="splash-dots"><span></span><span></span><span></span></div>
+
+  <div class="splash-logo">
+    🗺️
+  </div>
+
+  <h1>
+    دليل كفر الزيات و القري المجاوره
+  </h1>
+
+  <p>
+    كل خدمات مدينتك في مكان واحد
+  </p>
+
+  <div class="splash-dots">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+
 </div>
 
-<div class="toast" id="toast"></div>
 
-<div class="app" id="app" style="display:none;">
+<div
+  class="toast"
+  id="toast"
+></div>
 
-  <!-- هيدر -->
-  <div class="header">
-    <div class="header-top">
-      <div class="brand">
-        <div class="brand-icon">🗺️</div>
-        <div>
-          <div class="brand-name">دليل كفر الزيات و القري المجاوره</div>
-          <div class="brand-sub">كل الخدمات في مكان واحد</div>
-          <div class="brand-weather" id="w-temp">⏳ جاري تحميل الطقس...</div>
+
+<div
+  class="app"
+  id="app"
+  style="display:none;"
+>
+
+
+<!-- =====================================================
+     HEADER
+===================================================== -->
+
+<div class="header">
+
+  <div class="header-top">
+
+    <div class="brand">
+
+      <div class="brand-icon">
+        🗺️
+      </div>
+
+      <div>
+
+        <div class="brand-name">
+          دليل كفر الزيات و القري المجاوره
         </div>
+
+        <div class="brand-sub">
+          كل الخدمات في مكان واحد
+        </div>
+
+        <div
+          class="brand-weather"
+          id="w-temp"
+        >
+          ⏳ جاري تحميل الطقس...
+        </div>
+
       </div>
-      <div class="header-btns">
-        <button class="hbtn" onclick="toggleRadioBar()" title="راديو">📻</button>
-        <button class="hbtn" onclick="shareApp()" title="مشاركة">📤</button>
-      </div>
+
     </div>
-    <div class="search-bar">
-      <span style="font-size:16px;color:var(--muted);">🔍</span>
-      <input type="text" id="search-input" placeholder="ابحث عن صيدلية، مطعم، دكتور..." oninput="handleSearch(this.value)" onfocus="onSearchFocus()" onblur="onSearchBlur()">
+
+
+    <div class="header-btns">
+
+      <button
+        class="hbtn"
+        onclick="toggleRadioBar()"
+        title="راديو"
+      >
+        📻
+      </button>
+
+      <button
+        class="hbtn"
+        onclick="shareApp()"
+        title="مشاركة"
+      >
+        📤
+      </button>
+
     </div>
-    <div class="recent-search-area" id="recent-search-area"></div>
+
   </div>
 
-  <!-- الرئيسية -->
-  <div id="screen-home" class="screen active">
 
-    <!-- الراديو -->
-    <div class="radio-bar" id="radio-bar" style="display:none;">
-      <span class="radio-dot" id="radio-dot"></span>
-      <div class="info">
-        <div class="title">📻 <span id="radio-station-name">الراديو</span></div>
-        <div class="sub" id="radio-status">اضغط لتشغيل البث</div>
+  <div class="search-bar">
+
+    <span
+      style="
+        font-size:16px;
+        color:var(--muted);
+      "
+    >
+      🔍
+    </span>
+
+    <input
+      type="text"
+      id="search-input"
+      placeholder="ابحث عن صيدلية، مطعم، دكتور..."
+      oninput="handleSearch(this.value)"
+      onfocus="onSearchFocus()"
+      onblur="onSearchBlur()"
+    >
+
+  </div>
+
+
+  <div
+    class="recent-search-area"
+    id="recent-search-area"
+  ></div>
+
+</div>
+
+
+<!-- =====================================================
+     HOME
+===================================================== -->
+
+<div
+  id="screen-home"
+  class="screen active"
+>
+
+
+  <!-- =========================
+       RADIO
+  ========================== -->
+
+  <div
+    class="radio-bar"
+    id="radio-bar"
+    style="display:none;"
+  >
+
+    <span
+      class="radio-dot"
+      id="radio-dot"
+    ></span>
+
+
+    <div class="info">
+
+      <div class="title">
+
+        📻
+
+        <span id="radio-station-name">
+          إذاعة القرآن الكريم
+        </span>
+
       </div>
-      <button class="radio-ctrl-btn" id="radio-ctrl-btn" onclick="toggleRadio()">▶️</button>
-    </div>
-    <iframe id="radioFrame" src="" allow="autoplay" style="display:none;width:0;height:0;"></iframe>
 
-    <!-- كاروسيل الإعلانات -->
-    <div class="ad-carousel" id="adCarousel">
-      <div class="ad-track" id="adTrack">
-        <div class="ad-slide" onclick="openWAMsg('01029906789','انا شوفتك علي الدليل وعايز اعرف العروض اللي عندك')">
-          <div class="ad-slide-bg" style="background-image:url('HunkyPunky.webp');background-position:center top;"></div>
-        </div>
-        <div class="ad-slide" onclick="openWAMsg('01016032853','انا شوفتك علي الدليل وعايز اعرف العروض اللي عندك')">
-          <div class="ad-slide-bg" style="background-image:url('Karmasha.webp');background-position:center top;"></div>
-        </div>
-        <div class="ad-slide" onclick="openWAMsg('01020302005','انا شوفتك علي الدليل وعايز اعرف العروض اللي عندك')">
-          <div class="ad-slide-bg" style="background-image:url('Keshk.webp');background-position:center top;"></div>
-        </div>
-        <div class="ad-slide" onclick="window.open('tel:15243')">
-          <div class="ad-slide-bg" style="background-image:url('Molo.webp');background-position:center center;"></div>
-        </div>
-        <div class="ad-slide" onclick="openWAMsg('01016264637','عندي منتج عايز ابيعه علي الدليل')">
-          <div class="ad-slide-bg" style="background-image:url('بيع واشتري.webp');background-position:center top;"></div>
-        </div>
-        <div class="ad-slide" onclick="openWAMsg('01090908002','عايز احط اعلاني من فضلك علي الدليل')">
-          <div class="ad-slide-bg" style="background-image:url('اعلانك مجانا.webp');background-position:center top;"></div>
-        </div>
+
+      <div
+        class="sub"
+        id="radio-status"
+      >
+        اضغط لتشغيل البث
       </div>
-      <div class="ad-label" id="adLabel"></div>
-      <div class="ad-dots" id="adDots"></div>
+
     </div>
 
-    <!-- المفضلة -->
-    <div class="fav-section-home" id="fav-section-home"></div>
 
-    <!-- التصنيفات -->
-    <div class="sec-title">تصنيفات الدليل <span class="count" id="cats-count"></span></div>
-    <div class="cats-grid" id="cats-grid"></div>
+    <button
+      class="radio-ctrl-btn"
+      id="radio-ctrl-btn"
+      onclick="toggleRadio()"
+    >
+      ▶️
+    </button>
 
-    <!-- مشاركة -->
-    <div style="margin:20px 16px 0;background:linear-gradient(135deg,#25d366,#128c7e);border-radius:16px;padding:14px;display:flex;align-items:center;gap:12px;cursor:pointer;" onclick="shareApp()">
-      <div style="font-size:26px;">📲</div>
-      <div style="flex:1;">
-        <div style="color:white;font-size:13px;font-weight:700;">شارك الدليل مع أهل بلدك</div>
-        <div style="color:rgba(255,255,255,0.8);font-size:11px;">وساعد الناس يلاقوا اللي يحتاجوه</div>
+  </div>
+
+
+  <!-- لم نعد نستخدم iframe للراديو -->
+
+
+  <!-- =========================
+       ADS CAROUSEL
+  ========================== -->
+
+  <div
+    class="ad-carousel"
+    id="adCarousel"
+  >
+
+    <div
+      class="ad-track"
+      id="adTrack"
+    >
+
+
+      <div
+        class="ad-slide"
+        onclick="
+          openWAMsg(
+            '01029906789',
+            'انا شوفتك علي الدليل وعايز اعرف العروض اللي عندك'
+          )
+        "
+      >
+
+        <div
+          class="ad-slide-bg"
+          style="
+            background-image:url('HunkyPunky.webp');
+            background-position:center top;
+          "
+        ></div>
+
       </div>
+
+
+      <div
+        class="ad-slide"
+        onclick="
+          openWAMsg(
+            '01016032853',
+            'انا شوفتك علي الدليل وعايز اعرف العروض اللي عندك'
+          )
+        "
+      >
+
+        <div
+          class="ad-slide-bg"
+          style="
+            background-image:url('Karmasha.webp');
+            background-position:center top;
+          "
+        ></div>
+
+      </div>
+
+
+      <div
+        class="ad-slide"
+        onclick="
+          openWAMsg(
+            '01020302005',
+            'انا شوفتك علي الدليل وعايز اعرف العروض اللي عندك'
+          )
+        "
+      >
+
+        <div
+          class="ad-slide-bg"
+          style="
+            background-image:url('Keshk.webp');
+            background-position:center top;
+          "
+        ></div>
+
+      </div>
+
+
+      <div
+        class="ad-slide"
+        onclick="
+          window.open('tel:15243')
+        "
+      >
+
+        <div
+          class="ad-slide-bg"
+          style="
+            background-image:url('Molo.webp');
+            background-position:center center;
+          "
+        ></div>
+
+      </div>
+
+
+      <div
+        class="ad-slide"
+        onclick="
+          openWAMsg(
+            '01016264637',
+            'عندي منتج عايز ابيعه علي الدليل'
+          )
+        "
+      >
+
+        <div
+          class="ad-slide-bg"
+          style="
+            background-image:url('بيع واشتري.webp');
+            background-position:center top;
+          "
+        ></div>
+
+      </div>
+
+
+      <div
+        class="ad-slide"
+        onclick="
+          openWAMsg(
+            '01090908002',
+            'عايز احط اعلاني من فضلك علي الدليل'
+          )
+        "
+      >
+
+        <div
+          class="ad-slide-bg"
+          style="
+            background-image:url('اعلانك مجانا.webp');
+            background-position:center top;
+          "
+        ></div>
+
+      </div>
+
     </div>
+
+
+    <div
+      class="ad-label"
+      id="adLabel"
+    ></div>
+
+
+    <div
+      class="ad-dots"
+      id="adDots"
+    ></div>
+
   </div>
 
-  <!-- شاشة الكاتيجوري -->
-  <div id="screen-category" class="screen">
-    <div class="back-btn" onclick="switchTab('home')">‹ رجوع للرئيسية</div>
-    <div class="sec-title" id="cat-screen-title">الخدمات</div>
-    <div id="services-list"></div>
+
+  <!-- FAVORITES -->
+
+  <div
+    class="fav-section-home"
+    id="fav-section-home"
+  ></div>
+
+
+  <!-- CATEGORIES -->
+
+  <div class="sec-title">
+
+    تصنيفات الدليل
+
+    <span
+      class="count"
+      id="cats-count"
+    ></span>
+
   </div>
 
-  <!-- شاشة البحث -->
-  <div id="screen-search" class="screen">
-    <div id="search-results-container" style="padding:8px 0;"></div>
-  </div>
 
-  <!-- شاشة تفاصيل الخدمة -->
-  <div id="screen-service-detail" class="screen">
-    <div class="back-btn" id="svc-detail-back" onclick="goBackFromServiceDetail()">‹ رجوع</div>
-    <div id="service-detail-content"></div>
-  </div>
+  <div
+    class="cats-grid"
+    id="cats-grid"
+  ></div>
 
-  <!-- شاشة بيع واشتري -->
-  <div id="screen-sell" class="screen">
-    <div class="sec-title">بيع واشتري 🛒</div>
 
-    <div id="sell-tabs" style="display:flex;gap:8px;padding:0 16px 10px;">
-      <button onclick="showSellTab('browse')" id="tab-browse" style="flex:1;padding:9px;border-radius:10px;font-size:12px;font-weight:700;font-family:'Cairo',sans-serif;cursor:pointer;background:var(--primary);color:white;border:none;">تصفح المنتجات</button>
-      <button onclick="showSellTab('add')" id="tab-add" style="flex:1;padding:9px;border-radius:10px;font-size:12px;font-weight:700;font-family:'Cairo',sans-serif;cursor:pointer;background:var(--bg);color:var(--muted);border:1px solid var(--border);">+ أضف منتجك</button>
+  <!-- SHARE -->
+
+  <div
+    style="
+      margin:20px 16px 0;
+      background:linear-gradient(135deg,#25d366,#128c7e);
+      border-radius:16px;
+      padding:14px;
+      display:flex;
+      align-items:center;
+      gap:12px;
+      cursor:pointer;
+    "
+    onclick="shareApp()"
+  >
+
+    <div style="font-size:26px;">
+      📲
     </div>
 
-    <div id="products-list"></div>
 
-    <div id="add-product-form" style="display:none;">
-      <div class="form-card">
-        <label class="flabel">اسم المنتج *</label>
-        <input type="text" id="prod-name" class="finput" placeholder="مثال: موبايل سامسونج">
-        <label class="flabel">السعر (جنيه) *</label>
-        <input type="number" min="1" max="100000000" inputmode="decimal" id="prod-price" class="finput" placeholder="مثال: 500">
-        <label class="flabel">وصف المنتج</label>
-        <textarea id="prod-desc" class="finput" placeholder="اوصف المنتج بالتفصيل..."></textarea>
-        <label class="flabel">رقم واتساب للتواصل *</label>
-        <input type="tel" inputmode="tel" maxlength="11" id="prod-phone" class="finput" placeholder="رقم موبايلك">
-        <label class="flabel">صورة المنتج (اختياري)</label>
-        <div id="img-upload-area" onclick="document.getElementById('prod-img-input').click()" style="border:2px dashed var(--border);border-radius:12px;padding:20px;text-align:center;cursor:pointer;background:var(--bg);margin-bottom:10px;transition:border-color 0.2s;">
-          <div id="img-preview-wrap">
-            <div style="font-size:32px;margin-bottom:6px;">📷</div>
-            <div style="font-size:12px;color:var(--muted);font-weight:600;">اضغط لرفع صورة المنتج</div>
-            <div style="font-size:11px;color:var(--muted);margin-top:3px;">JPG, PNG — حجم مناسب</div>
+    <div style="flex:1;">
+
+      <div
+        style="
+          color:white;
+          font-size:13px;
+          font-weight:700;
+        "
+      >
+        شارك الدليل مع أهل بلدك
+      </div>
+
+      <div
+        style="
+          color:rgba(255,255,255,0.8);
+          font-size:11px;
+        "
+      >
+        وساعد الناس يلاقوا اللي يحتاجوه
+      </div>
+
+    </div>
+
+  </div>
+
+
+</div>
+
+
+<!-- =====================================================
+     CATEGORY SCREEN
+===================================================== -->
+
+<div
+  id="screen-category"
+  class="screen"
+>
+
+  <div
+    class="back-btn"
+    onclick="switchTab('home')"
+  >
+    ‹ رجوع للرئيسية
+  </div>
+
+  <div
+    class="sec-title"
+    id="cat-screen-title"
+  >
+    الخدمات
+  </div>
+
+  <div id="services-list"></div>
+
+</div>
+
+
+<!-- =====================================================
+     SEARCH SCREEN
+===================================================== -->
+
+<div
+  id="screen-search"
+  class="screen"
+>
+
+  <div
+    id="search-results-container"
+    style="padding:8px 0;"
+  ></div>
+
+</div>
+
+
+<!-- =====================================================
+     SERVICE DETAIL
+===================================================== -->
+
+<div
+  id="screen-service-detail"
+  class="screen"
+>
+
+  <div
+    class="back-btn"
+    id="svc-detail-back"
+    onclick="goBackFromServiceDetail()"
+  >
+    ‹ رجوع
+  </div>
+
+  <div id="service-detail-content"></div>
+
+</div>
+
+
+<!-- =====================================================
+     MARKETPLACE
+===================================================== -->
+
+<div
+  id="screen-sell"
+  class="screen"
+>
+
+  <div class="sec-title">
+    بيع واشتري 🛒
+  </div>
+
+
+  <div
+    id="sell-tabs"
+    style="
+      display:flex;
+      gap:8px;
+      padding:0 16px 10px;
+    "
+  >
+
+    <button
+      onclick="showSellTab('browse')"
+      id="tab-browse"
+      style="
+        flex:1;
+        padding:9px;
+        border-radius:10px;
+        font-size:12px;
+        font-weight:700;
+        font-family:'Cairo',sans-serif;
+        cursor:pointer;
+        background:var(--primary);
+        color:white;
+        border:none;
+      "
+    >
+      تصفح المنتجات
+    </button>
+
+
+    <button
+      onclick="showSellTab('add')"
+      id="tab-add"
+      style="
+        flex:1;
+        padding:9px;
+        border-radius:10px;
+        font-size:12px;
+        font-weight:700;
+        font-family:'Cairo',sans-serif;
+        cursor:pointer;
+        background:var(--bg);
+        color:var(--muted);
+        border:1px solid var(--border);
+      "
+    >
+      + أضف منتجك
+    </button>
+
+  </div>
+
+
+  <div id="products-list"></div>
+
+
+  <div
+    id="add-product-form"
+    style="display:none;"
+  >
+
+    <div class="form-card">
+
+      <label class="flabel">
+        اسم المنتج *
+      </label>
+
+      <input
+        type="text"
+        id="prod-name"
+        class="finput"
+        placeholder="مثال: موبايل سامسونج"
+      >
+
+
+      <label class="flabel">
+        السعر (جنيه) *
+      </label>
+
+      <input
+        type="number"
+        min="1"
+        max="100000000"
+        inputmode="decimal"
+        id="prod-price"
+        class="finput"
+        placeholder="مثال: 500"
+      >
+
+
+      <label class="flabel">
+        وصف المنتج
+      </label>
+
+      <textarea
+        id="prod-desc"
+        class="finput"
+        placeholder="اوصف المنتج بالتفصيل..."
+      ></textarea>
+
+
+      <label class="flabel">
+        رقم واتساب للتواصل *
+      </label>
+
+      <input
+        type="tel"
+        inputmode="tel"
+        maxlength="11"
+        id="prod-phone"
+        class="finput"
+        placeholder="رقم موبايلك"
+      >
+
+
+      <label class="flabel">
+        صورة المنتج (اختياري)
+      </label>
+
+
+      <div
+        id="img-upload-area"
+        onclick="
+          document
+            .getElementById('prod-img-input')
+            .click()
+        "
+        style="
+          border:2px dashed var(--border);
+          border-radius:12px;
+          padding:20px;
+          text-align:center;
+          cursor:pointer;
+          background:var(--bg);
+          margin-bottom:10px;
+          transition:border-color 0.2s;
+        "
+      >
+
+        <div id="img-preview-wrap">
+
+          <div
+            style="
+              font-size:32px;
+              margin-bottom:6px;
+            "
+          >
+            📷
           </div>
+
+          <div
+            style="
+              font-size:12px;
+              color:var(--muted);
+              font-weight:600;
+            "
+          >
+            اضغط لرفع صورة المنتج
+          </div>
+
+          <div
+            style="
+              font-size:11px;
+              color:var(--muted);
+              margin-top:3px;
+            "
+          >
+            JPG, PNG — حجم مناسب
+          </div>
+
         </div>
-        <input type="file" id="prod-img-input" accept="image/*" style="display:none;" onchange="handleProductImage(this)">
-        <button class="main-btn" onclick="addProduct()">نشر المنتج 🚀</button>
+
       </div>
-    </div>
-  </div>
 
-  <!-- شاشة الإعلانات -->
-  <div id="screen-ads" class="screen">
-    <div style="margin:16px;background:linear-gradient(135deg,#ff6b35,#ff9a56);border-radius:18px;padding:20px;color:white;text-align:center;">
-      <div style="font-size:32px;margin-bottom:10px;">📣</div>
-      <div style="font-size:18px;font-weight:900;margin-bottom:6px;">أعلن في دليل كفر الزيات</div>
-      <div style="font-size:13px;opacity:0.9;">وصّل لكل أهل المدينة بسعر مناسب</div>
-    </div>
-    <div class="sec-title">باقات الإعلان</div>
-    <div class="ad-pkg" style="border:2px solid var(--primary);">
-      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;">
-        <div>
-          <div style="background:var(--primary);color:white;font-size:10px;padding:2px 8px;border-radius:20px;display:inline-block;margin-bottom:4px;">الأكثر طلباً</div>
-          <div style="font-size:14px;font-weight:700;">باقة مميزة ⭐</div>
-        </div>
-        <div style="font-size:15px;font-weight:900;color:var(--primary);">مجاناً<br><span style="font-size:11px;color:var(--muted);font-weight:400;">لفترة محدودة</span></div>
-      </div>
-      <div class="ad-feat">ظهور في الصفحة الرئيسية</div>
-      <div class="ad-feat">بطاقة مميزة بلون مختلف</div>
-      <div class="ad-feat">رقم الواتساب ظاهر مباشرة</div>
-      <div class="ad-feat" style="margin-bottom:12px;">إضافة صورة أو لوجو</div>
-      <button class="ad-pkg-btn" onclick="openWA('01016264637')">احجز مكانك الآن ←</button>
-    </div>
-    <div class="ad-pkg">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
-        <div style="font-size:14px;font-weight:700;">إضافة خدمة مجانية 📍</div>
-        <div style="font-size:15px;font-weight:900;color:var(--green);">مجاناً</div>
-      </div>
-      <div class="ad-feat">إضافة نشاطك في التصنيف المناسب</div>
-      <div class="ad-feat">اسم + رقم واتساب</div>
-      <div class="ad-feat" style="margin-bottom:12px;">يظهر لكل زوار الدليل</div>
-      <button class="ad-pkg-btn outline" onclick="openWA('01016264637')">أضف نشاطك مجاناً ←</button>
-    </div>
-    <div style="margin:0 16px;background:var(--bg);border-radius:14px;padding:14px;text-align:center;">
-      <div style="font-size:13px;font-weight:700;margin-bottom:6px;">تواصل معنا مباشرة</div>
-      <div style="font-size:12px;color:var(--muted);margin-bottom:10px;">للاستفسار عن الإعلانات والباقات</div>
-      <button style="background:var(--green);color:white;border:none;border-radius:10px;padding:10px 20px;font-size:13px;font-weight:700;font-family:'Cairo',sans-serif;cursor:pointer;" onclick="openWA('01016264637')">📞 واتساب الإدارة</button>
-    </div>
-  </div>
 
-  <!-- شاشة المحفظة -->
-  <div id="screen-wallet" class="screen">
-    <div class="sec-title">محفظتي 💰</div>
-    <div id="wallet-content"></div>
-  </div>
+      <input
+        type="file"
+        id="prod-img-input"
+        accept="image/*"
+        style="display:none;"
+        onchange="handleProductImage(this)"
+      >
 
-  <!-- شاشة شحن المحفظة -->
-  <div id="screen-charge" class="screen">
-    <div class="back-btn" onclick="switchTab('wallet')">‹ رجوع للمحفظة</div>
-    <div class="sec-title">شحن المحفظة 💳</div>
-    <div class="charge-box">
-      <div style="font-size:13px;font-weight:700;margin-bottom:10px;">حول على رقم فودافون كاش</div>
-      <div class="vodafone-badge">
-        <div style="font-size:22px;">📱</div>
-        <div>
-          <div style="font-size:11px;color:var(--muted);">رقم فودافون كاش</div>
-          <div class="vodafone-num">01016264637</div>
-        </div>
-        <button class="copy-btn" onclick="copyNum()">نسخ</button>
-      </div>
-      <label class="flabel">قيمة التحويل (جنيه) *</label>
-      <input type="number" id="charge-amount" class="finput" placeholder="مثال: 50">
-      <label class="flabel">صورة إيصال التحويل *</label>
-      <div id="receipt-upload" onclick="document.getElementById('receipt-input').click()" style="border:2px dashed var(--border);border-radius:12px;padding:20px;text-align:center;cursor:pointer;background:var(--bg);margin-bottom:10px;">
-        <div id="receipt-preview">
-          <div style="font-size:32px;margin-bottom:6px;">📤</div>
-          <div style="font-size:12px;color:var(--muted);font-weight:600;">ارفع صورة الإيصال</div>
-          <div style="font-size:11px;color:var(--muted);margin-top:3px;">(لقطة شاشة أو إيصال)</div>
-        </div>
-      </div>
-      <input type="file" id="receipt-input" accept="image/*" style="display:none;" onchange="previewReceipt(this)">
-      <button class="main-btn" onclick="sendChargeRequest()">إرسال طلب الشحن 📨</button>
+
+      <button
+        class="main-btn"
+        onclick="addProduct()"
+      >
+        نشر المنتج 🚀
+      </button>
+
     </div>
-    <div style="margin:0 16px;background:#fff3ee;border-radius:12px;padding:12px 14px;font-size:12px;color:var(--primary);line-height:1.7;">
-      ⚠️ بعد إرسال طلبك هيتم مراجعة الإيصال وإضافة الرصيد خلال ساعات قليلة.
-    </div>
-  </div>
 
-  <!-- شاشة منتجاتي -->
-  <div id="screen-myproducts" class="screen">
-    <div class="back-btn" onclick="switchTab('account')">‹ رجوع للحساب</div>
-    <div class="sec-title">منتجاتي 📦</div>
-    <div id="myproducts-list"></div>
-  </div>
-
-  <!-- شاشة تفاصيل المنتج -->
-  <div id="screen-product-detail" class="screen">
-    <div class="back-btn" id="product-back-btn" onclick="switchTab('sell')">‹ رجوع</div>
-    <div id="product-detail-content"></div>
-  </div>
-
-  <!-- شاشة الحساب -->
-  <div id="screen-account" class="screen">
-    <div id="account-content"></div>
-  </div>
-
-  <!-- البار السفلي -->
-  <div class="bottom-nav">
-    <button class="nbtn active" id="nav-home" onclick="switchTab('home')">
-      <span class="ni">🏠</span><span class="nl">الرئيسية</span>
-    </button>
-    <button class="sell-btn-wrap" id="nav-sell" onclick="switchTab('sell')">
-      <div class="sell-icon">🛒</div>
-      <div class="sell-lbl">بيع واشتري </div>
-    </button>
-    <button class="nbtn" id="nav-ads" onclick="switchTab('ads')">
-      <span class="ni">📣</span><span class="nl">أعلن معنا</span>
-    </button>
-    <button class="nbtn" id="nav-wallet" onclick="switchTab('wallet')">
-      <span class="ni">💰</span><span class="nl">محفظتي</span>
-    </button>
-    <button class="nbtn" id="nav-account" onclick="switchTab('account')">
-      <span class="ni">👤</span><span class="nl">حسابي</span>
-    </button>
   </div>
 
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
-<script src="js/config.js" defer></script>
-<script src="js/utils.js" defer></script>
-<script src="js/backend.js" defer></script>
-<script src="js/data.js" defer></script>
-<script src="js/user-state.js" defer></script>
-<script src="js/services.js" defer></script>
-<script src="js/radio.js" defer></script>
-<script src="js/marketplace.js" defer></script>
-<script src="js/wallet.js" defer></script>
-<script src="js/auth.js" defer></script>
-<script src="js/integrations.js" defer></script>
-<script src="js/app.js" defer></script>
+
+<!-- =====================================================
+     ADS
+===================================================== -->
+
+<div
+  id="screen-ads"
+  class="screen"
+>
+
+  <div
+    style="
+      margin:16px;
+      background:linear-gradient(135deg,#ff6b35,#ff9a56);
+      border-radius:18px;
+      padding:20px;
+      color:white;
+      text-align:center;
+    "
+  >
+
+    <div
+      style="
+        font-size:32px;
+        margin-bottom:10px;
+      "
+    >
+      📣
+    </div>
+
+    <div
+      style="
+        font-size:18px;
+        font-weight:900;
+        margin-bottom:6px;
+      "
+    >
+      أعلن في دليل كفر الزيات
+    </div>
+
+    <div
+      style="
+        font-size:13px;
+        opacity:0.9;
+      "
+    >
+      وصّل لكل أهل المدينة بسعر مناسب
+    </div>
+
+  </div>
+
+
+  <div class="sec-title">
+    باقات الإعلان
+  </div>
+
+
+  <div
+    class="ad-pkg"
+    style="border:2px solid var(--primary);"
+  >
+
+    <div
+      style="
+        display:flex;
+        justify-content:space-between;
+        align-items:flex-start;
+        margin-bottom:10px;
+      "
+    >
+
+      <div>
+
+        <div
+          style="
+            background:var(--primary);
+            color:white;
+            font-size:10px;
+            padding:2px 8px;
+            border-radius:20px;
+            display:inline-block;
+            margin-bottom:4px;
+          "
+        >
+          الأكثر طلباً
+        </div>
+
+        <div
+          style="
+            font-size:14px;
+            font-weight:700;
+          "
+        >
+          باقة مميزة ⭐
+        </div>
+
+      </div>
+
+
+      <div
+        style="
+          font-size:15px;
+          font-weight:900;
+          color:var(--primary);
+        "
+      >
+
+        مجاناً
+
+        <br>
+
+        <span
+          style="
+            font-size:11px;
+            color:var(--muted);
+            font-weight:400;
+          "
+        >
+          لفترة محدودة
+        </span>
+
+      </div>
+
+    </div>
+
+
+    <div class="ad-feat">
+      ظهور في الصفحة الرئيسية
+    </div>
+
+    <div class="ad-feat">
+      بطاقة مميزة بلون مختلف
+    </div>
+
+    <div class="ad-feat">
+      رقم الواتساب ظاهر مباشرة
+    </div>
+
+    <div
+      class="ad-feat"
+      style="margin-bottom:12px;"
+    >
+      إضافة صورة أو لوجو
+    </div>
+
+
+    <button
+      class="ad-pkg-btn"
+      onclick="openWA('01016264637')"
+    >
+      احجز مكانك الآن ←
+    </button>
+
+  </div>
+
+
+  <div class="ad-pkg">
+
+    <div
+      style="
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+        margin-bottom:10px;
+      "
+    >
+
+      <div
+        style="
+          font-size:14px;
+          font-weight:700;
+        "
+      >
+        إضافة خدمة مجانية 📍
+      </div>
+
+      <div
+        style="
+          font-size:15px;
+          font-weight:900;
+          color:var(--green);
+        "
+      >
+        مجاناً
+      </div>
+
+    </div>
+
+
+    <div class="ad-feat">
+      إضافة نشاطك في التصنيف المناسب
+    </div>
+
+    <div class="ad-feat">
+      اسم + رقم واتساب
+    </div>
+
+    <div
+      class="ad-feat"
+      style="margin-bottom:12px;"
+    >
+      يظهر لكل زوار الدليل
+    </div>
+
+
+    <button
+      class="ad-pkg-btn outline"
+      onclick="openWA('01016264637')"
+    >
+      أضف نشاطك مجاناً ←
+    </button>
+
+  </div>
+
+
+  <div
+    style="
+      margin:0 16px;
+      background:var(--bg);
+      border-radius:14px;
+      padding:14px;
+      text-align:center;
+    "
+  >
+
+    <div
+      style="
+        font-size:13px;
+        font-weight:700;
+        margin-bottom:6px;
+      "
+    >
+      تواصل معنا مباشرة
+    </div>
+
+    <div
+      style="
+        font-size:12px;
+        color:var(--muted);
+        margin-bottom:10px;
+      "
+    >
+      للاستفسار عن الإعلانات والباقات
+    </div>
+
+    <button
+      style="
+        background:var(--green);
+        color:white;
+        border:none;
+        border-radius:10px;
+        padding:10px 20px;
+        font-size:13px;
+        font-weight:700;
+        font-family:'Cairo',sans-serif;
+        cursor:pointer;
+      "
+      onclick="openWA('01016264637')"
+    >
+      📞 واتساب الإدارة
+    </button>
+
+  </div>
+
+</div>
+
+
+<!-- =====================================================
+     WALLET
+===================================================== -->
+
+<div
+  id="screen-wallet"
+  class="screen"
+>
+
+  <div class="sec-title">
+    محفظتي 💰
+  </div>
+
+  <div id="wallet-content"></div>
+
+</div>
+
+
+<!-- =====================================================
+     CHARGE WALLET
+===================================================== -->
+
+<div
+  id="screen-charge"
+  class="screen"
+>
+
+  <div
+    class="back-btn"
+    onclick="switchTab('wallet')"
+  >
+    ‹ رجوع للمحفظة
+  </div>
+
+  <div class="sec-title">
+    شحن المحفظة 💳
+  </div>
+
+
+  <div class="charge-box">
+
+    <div
+      style="
+        font-size:13px;
+        font-weight:700;
+        margin-bottom:10px;
+      "
+    >
+      حول على رقم فودافون كاش
+    </div>
+
+
+    <div class="vodafone-badge">
+
+      <div style="font-size:22px;">
+        📱
+      </div>
+
+
+      <div>
+
+        <div
+          style="
+            font-size:11px;
+            color:var(--muted);
+          "
+        >
+          رقم فودافون كاش
+        </div>
+
+        <div class="vodafone-num">
+          01016264637
+        </div>
+
+      </div>
+
+
+      <button
+        class="copy-btn"
+        onclick="copyNum()"
+      >
+        نسخ
+      </button>
+
+    </div>
+
+
+    <label class="flabel">
+      قيمة التحويل (جنيه) *
+    </label>
+
+    <input
+      type="number"
+      id="charge-amount"
+      class="finput"
+      placeholder="مثال: 50"
+    >
+
+
+    <label class="flabel">
+      صورة إيصال التحويل *
+    </label>
+
+
+    <div
+      id="receipt-upload"
+      onclick="
+        document
+          .getElementById('receipt-input')
+          .click()
+      "
+      style="
+        border:2px dashed var(--border);
+        border-radius:12px;
+        padding:20px;
+        text-align:center;
+        cursor:pointer;
+        background:var(--bg);
+        margin-bottom:10px;
+      "
+    >
+
+      <div id="receipt-preview">
+
+        <div
+          style="
+            font-size:32px;
+            margin-bottom:6px;
+          "
+        >
+          📤
+        </div>
+
+        <div
+          style="
+            font-size:12px;
+            color:var(--muted);
+            font-weight:600;
+          "
+        >
+          ارفع صورة الإيصال
+        </div>
+
+        <div
+          style="
+            font-size:11px;
+            color:var(--muted);
+            margin-top:3px;
+          "
+        >
+          (لقطة شاشة أو إيصال)
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <input
+      type="file"
+      id="receipt-input"
+      accept="image/*"
+      style="display:none;"
+      onchange="previewReceipt(this)"
+    >
+
+
+    <button
+      class="main-btn"
+      onclick="sendChargeRequest()"
+    >
+      إرسال طلب الشحن 📨
+    </button>
+
+  </div>
+
+
+  <div
+    style="
+      margin:0 16px;
+      background:#fff3ee;
+      border-radius:12px;
+      padding:12px 14px;
+      font-size:12px;
+      color:var(--primary);
+      line-height:1.7;
+    "
+  >
+    ⚠️ بعد إرسال طلبك هيتم مراجعة الإيصال وإضافة الرصيد خلال ساعات قليلة.
+  </div>
+
+</div>
+
+
+<!-- =====================================================
+     MY PRODUCTS
+===================================================== -->
+
+<div
+  id="screen-myproducts"
+  class="screen"
+>
+
+  <div
+    class="back-btn"
+    onclick="switchTab('account')"
+  >
+    ‹ رجوع للحساب
+  </div>
+
+  <div class="sec-title">
+    منتجاتي 📦
+  </div>
+
+  <div id="myproducts-list"></div>
+
+</div>
+
+
+<!-- =====================================================
+     PRODUCT DETAIL
+===================================================== -->
+
+<div
+  id="screen-product-detail"
+  class="screen"
+>
+
+  <div
+    class="back-btn"
+    id="product-back-btn"
+    onclick="switchTab('sell')"
+  >
+    ‹ رجوع
+  </div>
+
+  <div id="product-detail-content"></div>
+
+</div>
+
+
+<!-- =====================================================
+     ACCOUNT
+===================================================== -->
+
+<div
+  id="screen-account"
+  class="screen"
+>
+
+  <div id="account-content"></div>
+
+</div>
+
+
+<!-- =====================================================
+     BOTTOM NAV
+===================================================== -->
+
+<div class="bottom-nav">
+
+  <button
+    class="nbtn active"
+    id="nav-home"
+    onclick="switchTab('home')"
+  >
+
+    <span class="ni">
+      🏠
+    </span>
+
+    <span class="nl">
+      الرئيسية
+    </span>
+
+  </button>
+
+
+  <button
+    class="sell-btn-wrap"
+    id="nav-sell"
+    onclick="switchTab('sell')"
+  >
+
+    <div class="sell-icon">
+      🛒
+    </div>
+
+    <div class="sell-lbl">
+      بيع واشتري
+    </div>
+
+  </button>
+
+
+  <button
+    class="nbtn"
+    id="nav-ads"
+    onclick="switchTab('ads')"
+  >
+
+    <span class="ni">
+      📣
+    </span>
+
+    <span class="nl">
+      أعلن معنا
+    </span>
+
+  </button>
+
+
+  <button
+    class="nbtn"
+    id="nav-wallet"
+    onclick="switchTab('wallet')"
+  >
+
+    <span class="ni">
+      💰
+    </span>
+
+    <span class="nl">
+      محفظتي
+    </span>
+
+  </button>
+
+
+  <button
+    class="nbtn"
+    id="nav-account"
+    onclick="switchTab('account')"
+  >
+
+    <span class="ni">
+      👤
+    </span>
+
+    <span class="nl">
+      حسابي
+    </span>
+
+  </button>
+
+</div>
+
+
+</div>
+
+
+<!-- =====================================================
+     JAVASCRIPT
+===================================================== -->
+
+<script
+  src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
+  defer
+></script>
+
+
+<script
+  src="js/config.js"
+  defer
+></script>
+
+
+<script
+  src="js/utils.js"
+  defer
+></script>
+
+
+<script
+  src="js/backend.js"
+  defer
+></script>
+
+
+<script
+  src="js/data.js"
+  defer
+></script>
+
+
+<script
+  src="js/user-state.js"
+  defer
+></script>
+
+
+<script
+  src="js/services.js"
+  defer
+></script>
+
+
+<!-- HLS PLAYER -->
+
+<script
+  src="https://cdn.jsdelivr.net/npm/hls.js@latest"
+  defer
+></script>
+
+
+<!-- RADIO -->
+
+<script
+  src="js/radio.js"
+  defer
+></script>
+
+
+<script
+  src="js/marketplace.js"
+  defer
+></script>
+
+
+<script
+  src="js/wallet.js"
+  defer
+></script>
+
+
+<script
+  src="js/auth.js"
+  defer
+></script>
+
+
+<script
+  src="js/integrations.js"
+  defer
+></script>
+
+
+<script
+  src="js/app.js"
+  defer
+></script>
+
+
 </body>
+
 </html>
