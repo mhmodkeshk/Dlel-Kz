@@ -1,83 +1,24 @@
+/* =========================================================
+   دليل كفر الزيات — Integrations
+   Phase 1
+========================================================= */
+
+
 /* ===== الطقس ===== */
 
-const WEATHER_URL = '/api/weather';
-
-const wIcons = {
-  '01': '☀️',
-  '02': '⛅',
-  '03': '☁️',
-  '04': '☁️',
-  '09': '🌧️',
-  '10': '🌦️',
-  '11': '⛈️',
-  '13': '❄️',
-  '50': '🌫️'
-};
+/*
+  في Phase 1 لا نستخدم Weather API
+  لتجنب /api/weather 404
+  ويمكن إعادة الطقس الحقيقي لاحقاً.
+*/
 
 async function fetchWeather() {
-  try {
-    const r = await fetch(WEATHER_URL);
+  const weatherEl =
+    document.getElementById('w-temp');
 
-    if (!r.ok) {
-      throw new Error('WEATHER_REQUEST_FAILED');
-    }
-
-    const d = await r.json();
-
-    const weatherIcon =
-      d?.weather?.[0]?.icon || '';
-
-    const icon =
-      wIcons[
-        weatherIcon.slice(0, 2)
-      ] || '🌤️';
-
-    const temp =
-      Number(
-        d?.main?.temp
-      );
-
-    const description =
-      d?.weather?.[0]?.description ||
-      '';
-
-    const weatherEl =
-      document.getElementById(
-        'w-temp'
-      );
-
-    if (!weatherEl) return;
-
-    if (
-      Number.isFinite(temp)
-    ) {
-      weatherEl.textContent =
-        `${icon} ${Math.round(temp)}°م` +
-        (
-          description
-            ? ` — ${description}`
-            : ''
-        );
-    } else {
-      weatherEl.textContent =
-        '🌤️ كفر الزيات';
-    }
-
-  } catch (e) {
-    console.warn(
-      'Weather unavailable:',
-      e
-    );
-
-    const weatherEl =
-      document.getElementById(
-        'w-temp'
-      );
-
-    if (weatherEl) {
-      weatherEl.textContent =
-        '🌤️ كفر الزيات';
-    }
+  if (weatherEl) {
+    weatherEl.textContent =
+      '🌤️ كفر الزيات';
   }
 }
 
@@ -93,15 +34,11 @@ function normalizeEgyptPhone(phone) {
     return '';
   }
 
-  if (
-    digits.startsWith('20')
-  ) {
+  if (digits.startsWith('20')) {
     return digits;
   }
 
-  if (
-    digits.startsWith('0')
-  ) {
+  if (digits.startsWith('0')) {
     return '2' + digits;
   }
 
@@ -121,15 +58,13 @@ function openWA(phone) {
 
   window.open(
     `https://wa.me/${normalized}`,
-    '_blank'
+    '_blank',
+    'noopener,noreferrer'
   );
 }
 
 
-function openWAMsg(
-  phone,
-  msg
-) {
+function openWAMsg(phone, msg) {
   const normalized =
     normalizeEgyptPhone(phone);
 
@@ -144,7 +79,8 @@ function openWAMsg(
 
   window.open(
     `https://wa.me/${normalized}?text=${encodeURIComponent(message)}`,
-    '_blank'
+    '_blank',
+    'noopener,noreferrer'
   );
 }
 
@@ -152,7 +88,6 @@ function openWAMsg(
 /* ===== مشاركة الدليل ===== */
 
 function shareApp() {
-
   const txt =
     '🗺️ دليل كفر الزيات والقرى المجاورة\n\n' +
     '🛒 بيع واشتري أي حاجة بسهولة، واعرف كل خدمات منطقتك في مكان واحد!\n\n' +
@@ -160,28 +95,23 @@ function shareApp() {
     '👇 ادخل الدليل واكتشف اللي حواليك\n' +
     'https://dlel-kz.vercel.app';
 
-
-  if (
-    navigator.share
-  ) {
-
+  if (navigator.share) {
     navigator
       .share({
         title:
           'دليل كفر الزيات والقرى المجاورة',
 
-        text:
-          txt
+        text: txt
       })
       .catch(() => {});
 
     return;
   }
 
-
   window.open(
     `https://wa.me/?text=${encodeURIComponent(txt)}`,
-    '_blank'
+    '_blank',
+    'noopener,noreferrer'
   );
 }
 
@@ -191,11 +121,8 @@ function shareApp() {
 let toastTimer = null;
 
 function showToast(msg) {
-
   const toast =
-    document.getElementById(
-      'toast'
-    );
+    document.getElementById('toast');
 
   if (!toast) {
     return;
@@ -204,26 +131,16 @@ function showToast(msg) {
   toast.textContent =
     String(msg || '');
 
-  toast.classList.add(
-    'show'
-  );
+  toast.classList.add('show');
 
-
-  if (
-    toastTimer
-  ) {
-    clearTimeout(
-      toastTimer
-    );
+  if (toastTimer) {
+    clearTimeout(toastTimer);
   }
-
 
   toastTimer =
     setTimeout(
       () => {
-        toast.classList.remove(
-          'show'
-        );
+        toast.classList.remove('show');
       },
       2200
     );
@@ -248,99 +165,61 @@ const adLabels = [
 
 
 function initAdCarousel() {
-
   const track =
-    document.getElementById(
-      'adTrack'
-    );
+    document.getElementById('adTrack');
 
   const dots =
-    document.getElementById(
-      'adDots'
-    );
+    document.getElementById('adDots');
 
   const label =
-    document.getElementById(
-      'adLabel'
-    );
+    document.getElementById('adLabel');
 
-
-  if (
-    !track ||
-    !dots
-  ) {
+  if (!track || !dots) {
     return;
   }
-
 
   const slides =
     track.children;
 
-
-  if (
-    !slides.length
-  ) {
+  if (!slides.length) {
     return;
   }
 
-
-  dots.innerHTML =
-    '';
-
+  dots.innerHTML = '';
 
   for (
     let i = 0;
     i < slides.length;
     i++
   ) {
-
     const dot =
-      document.createElement(
-        'span'
-      );
+      document.createElement('span');
 
+    dot.className = 'ad-dot';
 
-    dot.className =
-      'ad-dot';
-
-
-    if (
-      i === 0
-    ) {
-      dot.classList.add(
-        'active'
-      );
+    if (i === 0) {
+      dot.classList.add('active');
     }
-
 
     dot.onclick =
       () => {
         moveAd(i);
       };
 
-
-    dots.appendChild(
-      dot
-    );
+    dots.appendChild(dot);
   }
-
 
   if (label) {
     label.textContent =
       adLabels[0] || '';
   }
 
-
   adRun();
-
 
   track.addEventListener(
     'touchstart',
     e => {
-
-      if (
-        !e.touches?.length
-      ) {
+      if (!e.touches?.length) {
         return;
       }
 
@@ -348,48 +227,33 @@ function initAdCarousel() {
         e.touches[0].clientX;
 
       adStop();
-
     },
     {
       passive: true
     }
   );
 
-
   track.addEventListener(
     'touchend',
     e => {
-
-      if (
-        !e.changedTouches?.length
-      ) {
+      if (!e.changedTouches?.length) {
         adRun();
         return;
       }
-
 
       const diff =
         adTouch -
         e.changedTouches[0].clientX;
 
-
-      if (
-        Math.abs(diff) > 40
-      ) {
-
-        if (
-          diff > 0
-        ) {
+      if (Math.abs(diff) > 40) {
+        if (diff > 0) {
           nextAd();
         } else {
           prevAd();
         }
-
       }
 
-
       adRun();
-
     },
     {
       passive: true
@@ -399,7 +263,6 @@ function initAdCarousel() {
 
 
 function adRun() {
-
   adStop();
 
   adTimer =
@@ -411,90 +274,57 @@ function adRun() {
 
 
 function adStop() {
-
-  if (
-    adTimer
-  ) {
-    clearInterval(
-      adTimer
-    );
-
-    adTimer =
-      null;
+  if (adTimer) {
+    clearInterval(adTimer);
+    adTimer = null;
   }
 }
 
 
 function moveAd(i) {
-
   const track =
-    document.getElementById(
-      'adTrack'
-    );
+    document.getElementById('adTrack');
 
   const dots =
-    document.getElementById(
-      'adDots'
-    );
+    document.getElementById('adDots');
 
   const label =
-    document.getElementById(
-      'adLabel'
-    );
+    document.getElementById('adLabel');
 
-
-  if (
-    !track
-  ) {
+  if (!track) {
     return;
   }
-
 
   const slides =
     track.children;
 
-
-  if (
-    !slides.length
-  ) {
+  if (!slides.length) {
     return;
   }
 
-
-  if (
-    i < 0
-  ) {
+  if (i < 0) {
     i =
       slides.length - 1;
   }
 
-
-  if (
-    i >= slides.length
-  ) {
+  if (i >= slides.length) {
     i = 0;
   }
 
-
   adNow = i;
-
 
   track.style.transform =
     `translateX(-${adNow * 100}%)`;
 
-
   if (dots) {
-
     const dotItems =
       dots.children;
-
 
     for (
       let j = 0;
       j < dotItems.length;
       j++
     ) {
-
       dotItems[j].className =
         'ad-dot' +
         (
@@ -502,10 +332,8 @@ function moveAd(i) {
             ? ' active'
             : ''
         );
-
     }
   }
-
 
   if (label) {
     label.textContent =
@@ -515,14 +343,10 @@ function moveAd(i) {
 
 
 function nextAd() {
-  moveAd(
-    adNow + 1
-  );
+  moveAd(adNow + 1);
 }
 
 
 function prevAd() {
-  moveAd(
-    adNow - 1
-  );
+  moveAd(adNow - 1);
 }
