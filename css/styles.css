@@ -21,12 +21,18 @@
   font-family: 'Cairo', sans-serif;
 }
 
+html {
+  direction: rtl;
+}
+
 body {
   background: var(--bg);
   color: var(--text);
   display: flex;
   justify-content: center;
   min-height: 100vh;
+  direction: rtl;
+  text-align: right;
 }
 
 .app {
@@ -36,12 +42,12 @@ body {
   min-height: 100vh;
   position: relative;
   padding-bottom: 80px;
+  direction: rtl;
+  text-align: right;
 }
 
 
-/* =========================================================
-   سبلاش — شاشة البداية الأصلية
-========================================================= */
+/* ===== SPLASH ===== */
 
 #splash {
   position: fixed;
@@ -129,9 +135,7 @@ body {
 }
 
 
-/* =========================================================
-   الهيدر
-========================================================= */
+/* ===== HEADER ===== */
 
 .header {
   background: linear-gradient(135deg,#ff6b35,#ff9a56);
@@ -140,6 +144,7 @@ body {
   position: sticky;
   top: 0;
   z-index: 100;
+  direction: rtl;
 }
 
 .header-top {
@@ -147,12 +152,14 @@ body {
   align-items: flex-start;
   justify-content: space-between;
   margin-bottom: 6px;
+  direction: rtl;
 }
 
 .brand {
   display: flex;
   align-items: center;
   gap: 10px;
+  direction: rtl;
 }
 
 .brand-icon {
@@ -187,9 +194,7 @@ body {
 }
 
 
-/* =========================================================
-   أزرار الراديو ونشر الدليل
-========================================================= */
+/* ===== HEADER ACTIONS ===== */
 
 .header-btns {
   display: flex;
@@ -224,8 +229,6 @@ body {
   align-items: center;
   justify-content: center;
   font-size: 17px;
-  line-height: 1;
-  transition: transform 0.2s ease, background 0.2s ease;
 }
 
 .header-action-label {
@@ -240,27 +243,10 @@ body {
 
 .header-action-btn:active .header-action-icon {
   transform: scale(0.9);
-  background: rgba(255,255,255,0.30);
 }
 
-.hbtn {
-  width: 34px;
-  height: 34px;
-  background: rgba(255,255,255,0.2);
-  border: 1px solid rgba(255,255,255,0.3);
-  border-radius: 10px;
-  color: white;
-  font-size: 15px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.2s;
-}
 
-.hbtn:active {
-  transform: scale(0.9);
-}
+/* ===== SEARCH ===== */
 
 .search-bar {
   display: flex;
@@ -270,6 +256,7 @@ body {
   padding: 10px 14px;
   gap: 8px;
   margin-top: 12px;
+  direction: rtl;
 }
 
 .search-bar input {
@@ -281,7 +268,6 @@ body {
   direction: rtl;
   text-align: right;
   background: transparent;
-  font-family: 'Cairo', sans-serif;
 }
 
 .search-bar input::placeholder {
@@ -289,9 +275,7 @@ body {
 }
 
 
-/* =========================================================
-   الشاشات
-========================================================= */
+/* ===== SCREENS ===== */
 
 .screen {
   display: none;
@@ -315,9 +299,7 @@ body {
 }
 
 
-/* =========================================================
-   كاروسيل الإعلانات
-========================================================= */
+/* ===== ADS ===== */
 
 .ad-carousel {
   margin: 0 16px 14px;
@@ -337,12 +319,10 @@ body {
 
 .ad-slide {
   min-width: 100%;
-  padding: 0;
-  cursor: pointer;
-  box-sizing: border-box;
+  height: 200px;
   position: relative;
   overflow: hidden;
-  height: 200px;
+  cursor: pointer;
   background: #1a1a2e;
 }
 
@@ -351,48 +331,6 @@ body {
   inset: 0;
   background-size: cover;
   background-position: center;
-  background-color: #1a1a2e;
-}
-
-.ad-slide-emoji {
-  min-width: 100%;
-  background: linear-gradient(135deg,#1a1a2e,#16213e);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  box-sizing: border-box;
-  position: relative;
-  overflow: hidden;
-  height: 200px;
-}
-
-.ad-icon {
-  width: 50px;
-  height: 50px;
-  border-radius: 14px;
-  background: linear-gradient(
-    135deg,
-    rgba(255,165,0,0.2),
-    rgba(255,215,0,0.1)
-  );
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 28px;
-  flex-shrink: 0;
-}
-
-.ad-slide-emoji .ad-icon {
-  font-size: 48px;
-  width: 64px;
-  height: 64px;
-  border-radius: 16px;
-}
-
-.ad-slide:active,
-.ad-slide-emoji:active {
-  opacity: 0.95;
 }
 
 .ad-label {
@@ -400,7 +338,6 @@ body {
   padding: 6px 0 0;
   font-size: 13px;
   font-weight: 700;
-  color: var(--text);
   direction: rtl;
 }
 
@@ -416,8 +353,6 @@ body {
   height: 6px;
   border-radius: 50%;
   background: rgba(0,0,0,0.15);
-  transition: all 0.3s;
-  cursor: pointer;
 }
 
 .ad-dot.active {
@@ -427,9 +362,7 @@ body {
 }
 
 
-/* =========================================================
-   عنوان القسم
-========================================================= */
+/* ===== SECTION TITLE ===== */
 
 .sec-title {
   display: flex;
@@ -438,7 +371,7 @@ body {
   margin: 14px 16px 10px;
   font-size: 14px;
   font-weight: 700;
-  color: var(--text);
+  direction: rtl;
 }
 
 .sec-title::before {
@@ -458,15 +391,14 @@ body {
 }
 
 
-/* =========================================================
-   التصنيفات
-========================================================= */
+/* ===== CATEGORIES ===== */
 
 .cats-grid {
   display: grid;
   grid-template-columns: repeat(3,1fr);
   gap: 10px;
   padding: 0 16px;
+  direction: rtl;
 }
 
 .cat-card {
@@ -476,18 +408,11 @@ body {
   padding: 14px 8px;
   text-align: center;
   cursor: pointer;
-  transition: all 0.25s;
-}
-
-.cat-card:active {
-  transform: scale(0.94);
 }
 
 .cat-card:hover {
   border-color: var(--primary);
   background: var(--primary-light);
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(255,107,53,0.1);
 }
 
 .cat-emoji {
@@ -499,39 +424,26 @@ body {
 .cat-name {
   font-size: 12px;
   font-weight: 700;
-  color: var(--text);
 }
 
 .cat-count {
   font-size: 10px;
   color: var(--muted);
-  margin-top: 2px;
 }
 
 
-/* =========================================================
-   شاشة التصنيف والخدمات
-========================================================= */
+/* ===== SERVICES ===== */
 
 .back-btn {
   display: flex;
-  align-items: center;
-  gap: 8px;
   margin: 16px;
   padding: 10px 14px;
   background: var(--primary-light);
   border: 1px solid var(--border);
   border-radius: 12px;
-  cursor: pointer;
-  font-size: 13px;
-  font-weight: 600;
   color: var(--primary);
   width: fit-content;
-  transition: all 0.2s;
-}
-
-.back-btn:active {
-  transform: scale(0.96);
+  cursor: pointer;
 }
 
 .service-card {
@@ -539,21 +451,11 @@ body {
   align-items: center;
   gap: 12px;
   margin: 0 16px 10px;
-  background: var(--white);
+  background: white;
   border: 1px solid var(--border);
   border-radius: 16px;
   padding: 12px 14px;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.service-card:active {
-  transform: scale(0.97);
-}
-
-.service-card:hover {
-  border-color: var(--primary);
-  box-shadow: 0 3px 12px rgba(255,107,53,0.08);
+  direction: rtl;
 }
 
 .service-avatar {
@@ -565,137 +467,62 @@ body {
   align-items: center;
   justify-content: center;
   font-size: 22px;
-  flex-shrink: 0;
 }
 
 .service-name {
   font-size: 13px;
   font-weight: 700;
-  color: var(--text);
 }
 
 .service-phone {
   font-size: 11px;
   color: var(--muted);
-  margin-top: 2px;
 }
 
 .service-actions {
   display: flex;
-  align-items: center;
   gap: 6px;
-  flex-shrink: 0;
 }
 
-.svc-wa-btn {
-  width: 34px;
-  height: 34px;
-  background: var(--green);
-  border-radius: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 17px;
-  flex-shrink: 0;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.svc-wa-btn:active {
-  transform: scale(0.9);
-}
-
-.svc-call-btn {
-  width: 34px;
-  height: 34px;
-  background: #2563eb;
-  border-radius: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 16px;
-  flex-shrink: 0;
-  cursor: pointer;
-  transition: all 0.2s;
-  text-decoration: none;
-  color: white;
-}
-
-.svc-call-btn:active {
-  transform: scale(0.9);
-}
-
+.svc-wa-btn,
+.svc-call-btn,
 .fav-heart-btn {
   width: 34px;
   height: 34px;
-  background: var(--white);
-  border: 1px solid var(--border);
   border-radius: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 16px;
-  flex-shrink: 0;
-  cursor: pointer;
-  transition: all 0.25s;
 }
 
-.fav-heart-btn:active {
-  transform: scale(0.9);
+.svc-wa-btn {
+  background: var(--green);
 }
 
-.fav-heart-btn.active {
-  background: #fee2e2;
-  border-color: #fecaca;
+.svc-call-btn {
+  background: #2563eb;
+  color: white;
+  text-decoration: none;
 }
 
-.fav-heart-btn .heart {
-  display: inline-block;
-}
-
-.fav-heart-btn.active .heart {
-  animation: heartPop 0.35s ease;
-}
-
-@keyframes heartPop {
-  0% {
-    transform: scale(1);
-  }
-
-  50% {
-    transform: scale(1.3);
-  }
-
-  100% {
-    transform: scale(1);
-  }
+.fav-heart-btn {
+  background: white;
+  border: 1px solid var(--border);
 }
 
 
-/* =========================================================
-   بيع واشتري
-========================================================= */
+/* ===== PRODUCTS ===== */
 
 .product-card {
   display: flex;
   align-items: center;
   gap: 12px;
   margin: 0 16px 10px;
-  background: var(--white);
+  background: white;
   border: 1px solid var(--border);
   border-radius: 16px;
   padding: 12px;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.product-card:active {
-  transform: scale(0.98);
-}
-
-.product-card:hover {
-  border-color: var(--primary);
-  box-shadow: 0 3px 12px rgba(255,107,53,0.08);
+  direction: rtl;
 }
 
 .product-img {
@@ -703,59 +530,34 @@ body {
   height: 60px;
   border-radius: 12px;
   background: var(--bg);
-  border: 1px solid var(--border);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 28px;
-  flex-shrink: 0;
   overflow: hidden;
 }
 
 .product-name {
   font-size: 13px;
   font-weight: 700;
-  color: var(--text);
 }
 
 .product-price {
   font-size: 14px;
   font-weight: 900;
   color: var(--primary);
-  margin-top: 2px;
 }
 
 .product-seller {
   font-size: 11px;
   color: var(--muted);
-  margin-top: 2px;
-}
-
-.product-wa {
-  width: 32px;
-  height: 32px;
-  background: var(--green);
-  border-radius: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 16px;
-  flex-shrink: 0;
-  margin-right: auto;
-  cursor: pointer;
 }
 
 
-/* =========================================================
-   النماذج
-========================================================= */
+/* ===== FORMS ===== */
 
 .form-card {
   margin: 0 16px 14px;
-  background: var(--white);
   border: 1px solid var(--border);
   border-radius: 16px;
   padding: 16px;
+  direction: rtl;
 }
 
 .finput {
@@ -764,22 +566,10 @@ body {
   border: 1.5px solid var(--border);
   border-radius: 12px;
   font-size: 13px;
-  font-family: 'Cairo', sans-serif;
   background: var(--bg);
-  color: var(--text);
-  outline: none;
-  transition: border-color 0.2s;
   margin-bottom: 10px;
-}
-
-.finput:focus {
-  border-color: var(--primary);
-  background: white;
-}
-
-textarea.finput {
-  resize: none;
-  height: 80px;
+  direction: rtl;
+  text-align: right;
 }
 
 .flabel {
@@ -797,31 +587,11 @@ textarea.finput {
   border: none;
   border-radius: 12px;
   padding: 13px;
-  font-size: 14px;
   font-weight: 700;
-  font-family: 'Cairo', sans-serif;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.main-btn:active {
-  transform: scale(0.97);
-}
-
-.main-btn.outline {
-  background: transparent;
-  color: var(--primary);
-  border: 2px solid var(--primary);
-}
-
-.main-btn.green {
-  background: var(--green);
 }
 
 
-/* =========================================================
-   المحفظة
-========================================================= */
+/* ===== WALLET ===== */
 
 .wallet-card {
   margin: 0 16px 14px;
@@ -829,34 +599,11 @@ textarea.finput {
   border-radius: 18px;
   padding: 18px;
   color: white;
-  position: relative;
-  overflow: hidden;
-}
-
-.wallet-card::after {
-  content: '💰';
-  position: absolute;
-  left: -10px;
-  bottom: -10px;
-  font-size: 80px;
-  opacity: 0.1;
-}
-
-.wallet-balance-lbl {
-  font-size: 12px;
-  opacity: 0.85;
-  margin-bottom: 4px;
 }
 
 .wallet-balance {
   font-size: 28px;
   font-weight: 900;
-}
-
-.wallet-user {
-  font-size: 11px;
-  opacity: 0.75;
-  margin-top: 4px;
 }
 
 .wallet-btns {
@@ -867,59 +614,25 @@ textarea.finput {
 }
 
 .wallet-btn {
-  background: var(--white);
   border: 1px solid var(--border);
   border-radius: 14px;
   padding: 14px;
   text-align: center;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.wallet-btn:active {
-  transform: scale(0.96);
-}
-
-.wallet-btn-icon {
-  font-size: 24px;
-  margin-bottom: 5px;
-}
-
-.wallet-btn-lbl {
-  font-size: 12px;
-  font-weight: 700;
-  color: var(--text);
 }
 
 
-/* =========================================================
-   الحساب
-========================================================= */
+/* ===== ACCOUNT ===== */
 
 .acc-header {
   background: linear-gradient(135deg,#ff6b35,#ff9a56);
   border-radius: 18px;
   padding: 24px;
-  text-align: center;
   color: white;
   margin: 16px;
-}
-
-.acc-avatar {
-  width: 68px;
-  height: 68px;
-  background: rgba(255,255,255,0.2);
-  border: 2px solid rgba(255,255,255,0.3);
-  border-radius: 50%;
-  margin: 0 auto 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 28px;
+  text-align: center;
 }
 
 .acc-card {
-  background: var(--white);
   border: 1px solid var(--border);
   border-radius: 16px;
   overflow: hidden;
@@ -932,67 +645,17 @@ textarea.finput {
   gap: 12px;
   padding: 14px 16px;
   border-bottom: 1px solid var(--border);
-  font-size: 13px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background 0.15s;
-}
-
-.acc-item:hover {
-  background: var(--primary-light);
-}
-
-.acc-item:last-child {
-  border-bottom: none;
-}
-
-.acc-ico {
-  width: 36px;
-  height: 36px;
-  background: var(--primary-light);
-  border-radius: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 17px;
-  flex-shrink: 0;
 }
 
 
-/* =========================================================
-   الإعلانات
-========================================================= */
+/* ===== ADS PACKAGES ===== */
 
 .ad-pkg {
-  background: var(--white);
+  background: white;
   border: 1px solid var(--border);
   border-radius: 16px;
   padding: 16px;
   margin: 0 16px 12px;
-}
-
-.ad-pkg-btn {
-  width: 100%;
-  background: var(--primary);
-  color: white;
-  border: none;
-  border-radius: 10px;
-  padding: 10px;
-  font-size: 13px;
-  font-weight: 700;
-  font-family: 'Cairo', sans-serif;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.ad-pkg-btn:active {
-  transform: scale(0.97);
-}
-
-.ad-pkg-btn.outline {
-  background: transparent;
-  color: var(--primary);
-  border: 1.5px solid var(--primary);
 }
 
 .ad-feat {
@@ -1004,13 +667,19 @@ textarea.finput {
 .ad-feat::before {
   content: '✓ ';
   color: var(--green);
-  font-weight: 700;
+}
+
+.ad-pkg-btn {
+  width: 100%;
+  background: var(--primary);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  padding: 10px;
 }
 
 
-/* =========================================================
-   البار السفلي
-========================================================= */
+/* ===== BOTTOM NAV ===== */
 
 .bottom-nav {
   position: fixed;
@@ -1023,51 +692,34 @@ textarea.finput {
   border-top: 1px solid var(--border);
   display: flex;
   z-index: 500;
+  direction: rtl;
 }
 
-.nbtn {
+.nbtn,
+.sell-btn-wrap {
   flex: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 10px 4px 8px;
   background: none;
   border: none;
-  cursor: pointer;
-  gap: 3px;
-  position: relative;
+}
+
+.nbtn {
+  padding: 10px 4px 8px;
 }
 
 .nbtn .ni {
   font-size: 20px;
-  transition: transform 0.2s;
 }
 
-.nbtn .nl {
+.nbtn .nl,
+.sell-lbl {
   font-size: 9px;
-  color: var(--muted);
-  font-family: 'Cairo', sans-serif;
-  font-weight: 600;
 }
 
 .nbtn.active .nl {
   color: var(--primary);
-}
-
-.nbtn.active .ni {
-  transform: translateY(-2px);
-}
-
-.sell-btn-wrap {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 6px 4px 8px;
-  flex: 1;
-  cursor: pointer;
-  background: none;
-  border: none;
 }
 
 .sell-icon {
@@ -1078,61 +730,10 @@ textarea.finput {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 18px;
-  position: relative;
-  animation: redPulse 1.5s infinite;
-}
-
-@keyframes redPulse {
-  0%,100% {
-    background: #ff4444;
-    box-shadow: 0 0 0 0 rgba(255,68,68,0.5);
-  }
-
-  50% {
-    background: #cc0000;
-    box-shadow: 0 0 0 8px rgba(255,68,68,0);
-  }
-}
-
-.sell-lbl {
-  font-size: 9px;
-  color: var(--red);
-  font-weight: 700;
-  margin-top: 3px;
-  font-family: 'Cairo', sans-serif;
 }
 
 
-/* =========================================================
-   Toast
-========================================================= */
-
-.toast {
-  position: fixed;
-  top: 80px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: var(--text);
-  color: white;
-  padding: 10px 20px;
-  border-radius: 20px;
-  font-size: 13px;
-  font-weight: 600;
-  z-index: 9000;
-  opacity: 0;
-  transition: opacity 0.3s;
-  white-space: nowrap;
-}
-
-.toast.show {
-  opacity: 1;
-}
-
-
-/* =========================================================
-   الراديو
-========================================================= */
+/* ===== RADIO ===== */
 
 .radio-bar {
   display: flex;
@@ -1142,23 +743,20 @@ textarea.finput {
   background: linear-gradient(135deg,#1a1a2e,#2d2d5e);
   border-radius: 16px;
   padding: 10px 14px;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+  direction: rtl;
 }
 
 .radio-bar .info {
   flex: 1;
 }
 
-.radio-bar .info .title {
+.radio-bar .title {
   color: white;
   font-size: 12px;
   font-weight: 700;
-  display: flex;
-  align-items: center;
-  gap: 6px;
 }
 
-.radio-bar .info .sub {
+.radio-bar .sub {
   color: rgba(255,255,255,0.6);
   font-size: 10px;
 }
@@ -1170,32 +768,6 @@ textarea.finput {
   border-radius: 50%;
   background: var(--primary);
   color: white;
-  font-size: 16px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.2s;
-  flex-shrink: 0;
-}
-
-.radio-ctrl-btn:active {
-  transform: scale(0.9);
-}
-
-.radio-ctrl-btn.playing {
-  background: var(--red);
-  animation: radioPulse 2s infinite;
-}
-
-@keyframes radioPulse {
-  0%,100% {
-    box-shadow: 0 0 0 0 rgba(255,68,68,0.4);
-  }
-
-  50% {
-    box-shadow: 0 0 0 8px rgba(255,68,68,0);
-  }
 }
 
 .radio-dot {
@@ -1203,395 +775,39 @@ textarea.finput {
   height: 8px;
   border-radius: 50%;
   background: #888;
-  flex-shrink: 0;
-  display: inline-block;
 }
 
 .radio-dot.on {
   background: #ff4444;
-  animation: rLive 1s infinite;
-}
-
-@keyframes rLive {
-  0%,100% {
-    opacity: 1;
-  }
-
-  50% {
-    opacity: 0.3;
-  }
 }
 
 
-/* =========================================================
-   تسجيل الدخول
-========================================================= */
+/* ===== TOAST ===== */
 
-.auth-screen {
-  padding: 20px 16px;
-}
-
-.auth-logo {
-  text-align: center;
-  margin-bottom: 24px;
-}
-
-.auth-logo .logo {
-  font-size: 56px;
-  margin-bottom: 10px;
-}
-
-.auth-logo h2 {
-  font-size: 20px;
-  font-weight: 900;
-  color: var(--text);
-}
-
-.auth-logo p {
-  font-size: 13px;
-  color: var(--muted);
-  margin-top: 4px;
-}
-
-.auth-tabs {
-  display: flex;
-  background: var(--bg);
-  border-radius: 12px;
-  padding: 4px;
-  margin-bottom: 20px;
-}
-
-.auth-tab {
-  flex: 1;
-  padding: 10px;
-  text-align: center;
-  font-size: 13px;
-  font-weight: 700;
-  border-radius: 10px;
-  cursor: pointer;
-  color: var(--muted);
-  transition: all 0.2s;
-  border: none;
-  background: none;
-  font-family: 'Cairo', sans-serif;
-}
-
-.auth-tab.active {
-  background: white;
-  color: var(--primary);
-  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-}
-
-
-/* =========================================================
-   الباسورد
-========================================================= */
-
-.pass-wrap {
-  position: relative;
-  margin-bottom: 10px;
-}
-
-.pass-wrap .finput {
-  margin-bottom: 0;
-  padding-left: 44px;
-}
-
-.eye-btn {
-  position: absolute;
-  left: 12px;
-  top: 50%;
-  transform: translateY(-50%);
-  background: none;
-  border: none;
-  cursor: pointer;
-  font-size: 18px;
-  color: var(--muted);
-  padding: 0;
-}
-
-
-/* =========================================================
-   نسيت الباسورد
-========================================================= */
-
-.forgot-link {
-  text-align: center;
-  margin-top: 12px;
-  font-size: 12px;
-  color: var(--primary);
-  cursor: pointer;
-  font-weight: 700;
-  text-decoration: underline;
-}
-
-
-/* =========================================================
-   تفاصيل المنتج
-========================================================= */
-
-.prod-detail-img {
-  width: 100%;
-  height: 220px;
-  object-fit: cover;
-  border-radius: 16px;
-  margin-bottom: 14px;
-}
-
-.prod-detail-placeholder {
-  width: 100%;
-  height: 220px;
-  background: var(--bg);
-  border-radius: 16px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 64px;
-  margin-bottom: 14px;
-}
-
-.safety-box {
-  background: #fff8e1;
-  border: 1px solid #ffe082;
-  border-radius: 14px;
-  padding: 14px;
-  margin: 0 16px 14px;
-}
-
-.safety-item {
-  display: flex;
-  gap: 8px;
-  align-items: flex-start;
-  font-size: 12px;
-  color: #5d4037;
-  margin-bottom: 6px;
-  line-height: 1.5;
-}
-
-.safety-item:last-child {
-  margin-bottom: 0;
-}
-
-.safety-item::before {
-  content: '•';
-  color: #ff6b35;
-  font-weight: 900;
-  flex-shrink: 0;
-}
-
-
-/* =========================================================
-   سجل المعاملات
-========================================================= */
-
-.tx-item {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 12px 16px;
-  border-bottom: 1px solid var(--border);
-}
-
-.tx-item:last-child {
-  border-bottom: none;
-}
-
-.tx-icon {
-  width: 36px;
-  height: 36px;
-  border-radius: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 16px;
-  flex-shrink: 0;
-}
-
-.tx-icon.plus {
-  background: #e8fdf0;
-}
-
-.tx-icon.minus {
-  background: #fee2e2;
-}
-
-.tx-name {
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--text);
-}
-
-.tx-date {
-  font-size: 11px;
-  color: var(--muted);
-}
-
-.tx-amount {
-  font-size: 13px;
-  font-weight: 900;
-  margin-right: auto;
-}
-
-.tx-amount.plus {
-  color: #16a34a;
-}
-
-.tx-amount.minus {
-  color: #dc2626;
-}
-
-
-/* =========================================================
-   شحن المحفظة
-========================================================= */
-
-.charge-box {
-  margin: 0 16px 14px;
-  background: var(--white);
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  padding: 16px;
-}
-
-.vodafone-badge {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  background: #fff0f0;
-  border: 1px solid #fecaca;
-  border-radius: 12px;
-  padding: 12px 14px;
-  margin-bottom: 14px;
-}
-
-.vodafone-num {
-  font-size: 16px;
-  font-weight: 900;
-  color: #dc2626;
-}
-
-.copy-btn {
-  background: #dc2626;
+.toast {
+  position: fixed;
+  top: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--text);
   color: white;
-  border: none;
-  border-radius: 8px;
-  padding: 5px 12px;
-  font-size: 11px;
-  font-weight: 700;
-  cursor: pointer;
-  font-family: 'Cairo', sans-serif;
-  margin-right: auto;
-}
-
-
-/* =========================================================
-   منتجاتي
-========================================================= */
-
-.my-prod-card {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin: 0 16px 10px;
-  background: var(--white);
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  padding: 12px;
-}
-
-.my-prod-views {
-  font-size: 11px;
-  color: var(--muted);
-  display: flex;
-  align-items: center;
-  gap: 4px;
-}
-
-.del-btn {
-  background: #fee2e2;
-  border: none;
-  border-radius: 8px;
-  padding: 6px 12px;
-  font-size: 12px;
-  font-weight: 700;
-  color: #dc2626;
-  cursor: pointer;
-  font-family: 'Cairo', sans-serif;
-}
-
-
-/* =========================================================
-   المفضلة
-========================================================= */
-
-.fav-section-home {
-  margin: 0 16px 14px;
-  background: linear-gradient(135deg,#fff3ee,#ffffff);
-  border: 1px solid #ffd0b8;
-  border-radius: 16px;
-  padding: 14px;
-  display: none;
-}
-
-.fav-section-home.show {
-  display: block;
-  animation: fadeSlideIn 0.3s ease;
-}
-
-.fav-sh-title {
+  padding: 10px 20px;
+  border-radius: 20px;
   font-size: 13px;
-  font-weight: 700;
-  color: var(--primary);
-  margin-bottom: 10px;
-  display: flex;
-  align-items: center;
-  gap: 6px;
+  z-index: 9000;
+  opacity: 0;
 }
 
-.fav-sh-item {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 8px 0;
-  border-bottom: 1px solid rgba(255,107,53,0.1);
-  cursor: pointer;
-}
-
-.fav-sh-item:last-child {
-  border-bottom: none;
-}
-
-.fav-sh-icon {
-  font-size: 18px;
-  flex-shrink: 0;
-}
-
-.fav-sh-name {
-  font-size: 12px;
-  font-weight: 600;
-  flex: 1;
-}
-
-.fav-sh-wa {
-  width: 28px;
-  height: 28px;
-  background: var(--green);
-  border-radius: 7px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 14px;
-  cursor: pointer;
-  flex-shrink: 0;
+.toast.show {
+  opacity: 1;
 }
 
 
-/* =========================================================
-   تفاصيل الخدمة
-========================================================= */
+/* ===== SERVICE DETAIL ===== */
 
 .svc-detail-wrap {
   padding: 0 16px 16px;
+  direction: rtl;
 }
 
 .svc-detail-header {
@@ -1607,34 +823,27 @@ textarea.finput {
 .svc-detail-icon {
   width: 56px;
   height: 56px;
+  background: white;
   border-radius: 16px;
-  background: var(--white);
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 28px;
-  box-shadow: 0 4px 12px rgba(255,107,53,0.15);
-  flex-shrink: 0;
 }
 
 .svc-detail-name {
   font-size: 18px;
   font-weight: 900;
-  color: var(--text);
 }
 
-.svc-detail-cat {
-  font-size: 12px;
+.svc-detail-cat,
+.svc-detail-phone {
   color: var(--muted);
-  margin-top: 2px;
 }
 
 .svc-detail-phone {
-  font-size: 14px;
-  color: var(--muted);
-  margin-top: 4px;
   direction: ltr;
-  unicode-bidi: embed;
+  text-align: right;
 }
 
 .svc-actions {
@@ -1645,22 +854,10 @@ textarea.finput {
 
 .svc-action-btn {
   flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
   border: none;
   border-radius: 14px;
   padding: 14px;
-  font-size: 14px;
   font-weight: 700;
-  font-family: 'Cairo', sans-serif;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.svc-action-btn:active {
-  transform: scale(0.96);
 }
 
 .svc-action-btn.wa {
@@ -1671,279 +868,27 @@ textarea.finput {
 .svc-action-btn.call {
   background: #2563eb;
   color: white;
-  text-decoration: none;
 }
 
-.svc-action-btn.share {
-  background: var(--bg);
-  color: var(--text);
-  border: 1px solid var(--border);
-}
-
+.svc-action-btn.share,
 .svc-action-btn.fav-action {
-  background: var(--white);
-  color: var(--text);
-  border: 1px solid var(--border);
-}
-
-.svc-action-btn.fav-action.active {
-  background: #fee2e2;
-  border-color: #fecaca;
-  color: #dc2626;
+  background: var(--bg);
 }
 
 
-/* =========================================================
-   البحث الأخير
-========================================================= */
+/* ===== FAVORITES ===== */
 
-.recent-search-area {
-  padding: 0 16px 8px;
+.fav-section-home {
+  margin: 0 16px 14px;
   display: none;
 }
 
-.recent-search-area.show {
+.fav-section-home.show {
   display: block;
 }
 
-.recent-pills {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-}
 
-.recent-pill {
-  background: var(--bg);
-  border: 1px solid var(--border);
-  border-radius: 20px;
-  padding: 5px 12px;
-  font-size: 11px;
-  font-weight: 600;
-  color: var(--muted);
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  transition: all 0.2s;
-}
-
-.recent-pill:hover {
-  border-color: var(--primary);
-  color: var(--primary);
-  background: var(--primary-light);
-}
-
-.recent-pill .rp-del {
-  font-size: 12px;
-  opacity: 0.4;
-  cursor: pointer;
-}
-
-.recent-pill .rp-del:hover {
-  opacity: 1;
-}
-
-
-/* =========================================================
-   RTL FIX
-========================================================= */
-
-html {
-  direction: rtl;
-}
-
-body {
-  direction: rtl;
-  text-align: right;
-}
-
-.app {
-  direction: rtl;
-  text-align: right;
-}
-
-.header,
-.header-top,
-.brand,
-.header-btns,
-.search-bar {
-  direction: rtl;
-}
-
-.search-bar input {
-  direction: rtl;
-  text-align: right;
-}
-
-.sec-title {
-  direction: rtl;
-  text-align: right;
-}
-
-.sec-title .count {
-  margin-right: auto;
-  margin-left: 0;
-}
-
-.cats-grid,
-.cat-card {
-  direction: rtl;
-}
-
-.service-card {
-  direction: rtl;
-  text-align: right;
-}
-
-.service-actions {
-  direction: rtl;
-}
-
-.service-name,
-.service-phone {
-  text-align: right;
-}
-
-.svc-detail-wrap,
-.svc-detail-header,
-.svc-actions {
-  direction: rtl;
-}
-
-.svc-detail-header {
-  text-align: right;
-}
-
-.product-card,
-.form-card {
-  direction: rtl;
-  text-align: right;
-}
-
-.product-name,
-.product-price,
-.product-seller {
-  text-align: right;
-}
-
-.finput {
-  direction: rtl;
-  text-align: right;
-}
-
-input[type="tel"],
-input[type="number"] {
-  direction: ltr;
-  text-align: right;
-}
-
-.acc-header,
-.acc-card,
-.acc-item {
-  direction: rtl;
-}
-
-.acc-item {
-  text-align: right;
-}
-
-.wallet-card,
-.wallet-btns,
-.wallet-btn,
-.charge-box {
-  direction: rtl;
-  text-align: right;
-}
-
-.tx-item {
-  direction: rtl;
-}
-
-.tx-amount {
-  margin-right: auto;
-  margin-left: 0;
-}
-
-.fav-section-home,
-.fav-sh-item {
-  direction: rtl;
-  text-align: right;
-}
-
-.recent-search-area,
-.recent-pills {
-  direction: rtl;
-}
-
-.auth-screen,
-.auth-tabs {
-  direction: rtl;
-}
-
-.ad-pkg {
-  direction: rtl;
-  text-align: right;
-}
-
-/* الكاروسيل يظل LTR */
-.ad-carousel {
-  direction: ltr;
-}
-
-.ad-label,
-.ad-dots {
-  direction: rtl;
-}
-
-.radio-bar {
-  direction: rtl;
-  text-align: right;
-}
-
-.back-btn {
-  direction: rtl;
-}
-
-.bottom-nav {
-  direction: rtl;
-}
-
-.nbtn,
-.sell-btn-wrap {
-  direction: rtl;
-}
-
-#screen-home,
-#screen-category,
-#screen-search,
-#screen-service-detail,
-#screen-sell,
-#screen-ads,
-#screen-wallet,
-#screen-charge,
-#screen-myproducts,
-#screen-product-detail,
-#screen-account {
-  direction: rtl;
-}
-
-
-/* =========================================================
-   Shared badge
-========================================================= */
-
-.shared-badge {
-  background: rgba(255,255,255,0.2);
-  border-radius: 20px;
-  padding: 2px 8px;
-  font-size: 9px;
-  color: white;
-}
-
-
-/* =========================================================
-   تحسين الموبايلات الصغيرة
-========================================================= */
+/* ===== MOBILE ===== */
 
 @media (max-width: 390px) {
 
@@ -1956,18 +901,9 @@ input[type="number"] {
     font-size: 9px;
   }
 
-  .brand {
-    gap: 7px;
-  }
-
   .brand-icon {
     width: 34px;
     height: 34px;
-    font-size: 18px;
-  }
-
-  .header-btns {
-    gap: 4px;
   }
 
   .header-action-btn {
