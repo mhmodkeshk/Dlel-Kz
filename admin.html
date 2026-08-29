@@ -1,1 +1,272 @@
-<!doctype html><html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>لوحة إدارة دليل كفر الزيات</title><link rel="stylesheet" href="css/styles.css"><link rel="stylesheet" href="css/admin.css"></head><body class="admin-body"><main class="admin-shell"><header class="admin-head"><div><h1>🛡️ لوحة الإدارة</h1><p>مراجعة المنتجات وطلبات شحن المحفظة</p></div><a href="index.html" class="admin-back">العودة للدليل</a></header><div id="admin-status" class="admin-status">جاري التحقق من الصلاحيات...</div><section id="admin-app" hidden><div class="admin-stats" id="admin-stats"></div><div class="admin-tabs"><button class="admin-tab active" data-tab="products">المنتجات المعلقة</button><button class="admin-tab" data-tab="charges">طلبات الشحن</button></div><section id="admin-products"></section><section id="admin-charges" hidden></section></section></main><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="js/config.js"></script><script src="js/utils.js"></script><script src="js/backend.js"></script><script src="js/admin.js"></script></body></html>
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+
+  <title>لوحة إدارة دليل كفر الزيات</title>
+
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/admin.css">
+</head>
+
+<body class="admin-body">
+
+<main class="admin-shell">
+
+  <header class="admin-head">
+    <div>
+      <h1>🛡️ لوحة الإدارة</h1>
+      <p>إدارة المحلات والمنتجات وطلبات شحن المحفظة</p>
+    </div>
+
+    <a href="index.html" class="admin-back">
+      العودة للدليل
+    </a>
+  </header>
+
+  <div id="admin-status" class="admin-status">
+    جاري التحقق من الصلاحيات...
+  </div>
+
+  <section id="admin-app" hidden>
+
+    <div
+      class="admin-stats"
+      id="admin-stats"
+    ></div>
+
+    <div class="admin-tabs">
+
+      <button
+        class="admin-tab active"
+        data-tab="products"
+      >
+        المنتجات المعلقة
+      </button>
+
+      <button
+        class="admin-tab"
+        data-tab="businesses"
+      >
+        المحلات والخدمات
+      </button>
+
+      <button
+        class="admin-tab"
+        data-tab="charges"
+      >
+        طلبات الشحن
+      </button>
+
+    </div>
+
+    <!-- المنتجات -->
+    <section id="admin-products"></section>
+
+    <!-- المحلات والخدمات -->
+    <section id="admin-businesses" hidden>
+
+      <article
+        class="admin-card"
+        style="margin-bottom:16px;"
+      >
+
+        <h2 style="margin-bottom:14px;">
+          ➕ إضافة محل / خدمة جديدة
+        </h2>
+
+        <div
+          style="
+            display:grid;
+            grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+            gap:10px;
+          "
+        >
+
+          <div>
+            <label class="flabel">
+              التصنيف *
+            </label>
+
+            <select
+              id="business-category"
+              class="finput"
+            >
+              <option value="">
+                اختر التصنيف
+              </option>
+            </select>
+          </div>
+
+          <div>
+            <label class="flabel">
+              اسم النشاط *
+            </label>
+
+            <input
+              id="business-name"
+              class="finput"
+              type="text"
+              maxlength="120"
+              placeholder="مثال: صيدلية كشك"
+            >
+          </div>
+
+          <div>
+            <label class="flabel">
+              رقم الهاتف *
+            </label>
+
+            <input
+              id="business-phone"
+              class="finput"
+              type="tel"
+              maxlength="11"
+              placeholder="01xxxxxxxxx"
+            >
+          </div>
+
+          <div>
+            <label class="flabel">
+              واتساب
+            </label>
+
+            <input
+              id="business-whatsapp"
+              class="finput"
+              type="tel"
+              maxlength="11"
+              placeholder="01xxxxxxxxx"
+            >
+          </div>
+
+          <div>
+            <label class="flabel">
+              القرية / المنطقة
+            </label>
+
+            <input
+              id="business-village"
+              class="finput"
+              type="text"
+              value="كفر الزيات"
+            >
+          </div>
+
+          <div>
+            <label class="flabel">
+              العنوان
+            </label>
+
+            <input
+              id="business-address"
+              class="finput"
+              type="text"
+              placeholder="العنوان بالتفصيل"
+            >
+          </div>
+
+        </div>
+
+        <label class="flabel">
+          وصف النشاط
+        </label>
+
+        <textarea
+          id="business-description"
+          class="finput"
+          maxlength="1500"
+          placeholder="نبذة مختصرة عن النشاط"
+        ></textarea>
+
+        <label class="flabel">
+          رابط Google Maps
+        </label>
+
+        <input
+          id="business-maps"
+          class="finput"
+          type="url"
+          placeholder="https://..."
+        >
+
+        <div
+          style="
+            display:flex;
+            gap:18px;
+            flex-wrap:wrap;
+            margin:10px 0 15px;
+          "
+        >
+
+          <label>
+            <input
+              type="checkbox"
+              id="business-verified"
+            >
+            ✅ نشاط موثّق
+          </label>
+
+          <label>
+            <input
+              type="checkbox"
+              id="business-featured"
+            >
+            ⭐ نشاط مميز
+          </label>
+
+        </div>
+
+        <button
+          class="main-btn"
+          type="button"
+          onclick="createBusinessFromAdmin()"
+        >
+          إضافة النشاط ونشره مباشرة
+        </button>
+
+        <div
+          id="business-form-message"
+          style="
+            margin-top:10px;
+            font-size:12px;
+            font-weight:700;
+          "
+        ></div>
+
+      </article>
+
+      <h2 style="margin:16px 0 10px;">
+        ⏳ طلبات إضافة معلقة
+      </h2>
+
+      <div id="admin-business-pending"></div>
+
+      <h2 style="margin:20px 0 10px;">
+        🏪 كل المحلات والخدمات
+      </h2>
+
+      <div id="admin-business-list"></div>
+
+    </section>
+
+    <!-- الشحن -->
+    <section
+      id="admin-charges"
+      hidden
+    ></section>
+
+  </section>
+
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script src="js/config.js"></script>
+<script src="js/utils.js"></script>
+<script src="js/backend.js"></script>
+<script src="js/admin.js"></script>
+
+</body>
+</html>
